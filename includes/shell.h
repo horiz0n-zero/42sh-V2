@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 18:13:33 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/13 22:21:44 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/14 20:59:50 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_display	t_display;
 typedef struct s_dispatch	t_dispatch;
 typedef struct s_cmd		t_cmd;
 typedef struct s_environ	t_environ;
+typedef struct s_hashable	t_hashable;
 /*
 ** struct s_display { }; superclass
 */
@@ -109,17 +110,37 @@ typedef void		(*t_fpr)(t_dispatch *const dispatch, char *const buffer);
 ** struct s_environ { }; superclass
 */
 
+# define ENV_SPACE_AVAILABLE 5
+
 struct				s_environ
 {
 	const void		*based_class;
-	void			(*get_required)(void);
+	size_t			(*count)(size_t default_value);
+	size_t			size;
+	size_t			sort_type;
+	void			(*get_required)(t_environ *const environ);
 	int				(*modify)(const char *key, const char *value);
-	int				(*remove)(const char *key);
-	void			(*append)(const char *full_value);
+	int				(*remove)(t_environ *const env, const char *key);
+	void			(*append)(t_environ *const env, const char *full_value);
+	void			(*expand)(t_environ *const env, const size_t count);
+	void			(*sort)(const int count, char **array, const int func);
 };
-
 void				*ft_environ_ctor(const void *const self, ...);
 void				ft_environ_dtor(void *const self);
+
+void				env_get_default(t_environ *const env);
+size_t				env_count(void);
+int					env_remove(t_environ *const env, const char *key);
+void				env_append(t_environ *const env, const char *full_value);
+void				env_expand(t_environ *const env, const size_t count);
+
+typedef int			(*const f_sort)(char*, char*);
+void				env_sshell(const int count, char **array, const int func);
+# define F_ASCII 0
+# define F_REV_ASCII 1
+# define F_UNKNOW 2
+# define IVALUE *(array + i)
+# define JVALUE *(array + j)
 
 typedef struct		s_guard_struct
 {
@@ -128,17 +149,13 @@ typedef struct		s_guard_struct
 	char			*(*get)(const struct s_guard_struct guard);
 }					t_guard_struct;
 
-void				env_guard(void);
+void				env_guard(t_environ *const env);
 char				*guard_term(const t_guard_struct guard);
 char				*guard_path(const t_guard_struct guard);
 char				*guard_pwd(const t_guard_struct guard);
 char				*guard_shlvl(const t_guard_struct guard);
 char				*guard_underscore(const t_guard_struct guard);
-
-void				env_get_default(void);
-size_t				env_count(void);
-int					env_remove(const char *key);
-void				env_append(const char *full_value);
+# define GUARD_COUNT 5
 
 /*
 ** struct s_cmd { }; superclass
@@ -156,6 +173,16 @@ void				*ft_cmd_ctor(const void *const self, ...);
 void				ft_cmd_dtor(void *const self);
 
 /*
+** struct hashable { }; subclass
+*/
+struct				s_hashable
+{
+	const void		*based_class;
+};
+void				*ft_hashable_ctor(const void *const self, ...);
+void				ft_hashable_dtor(void *const self);
+
+/*
 ** struct s_dispatch { }; subclass
 */
 
@@ -166,7 +193,7 @@ struct				s_dispatch
 	const void		*based_class;
 	t_display		*display;
 	t_environ		*environ;
-	pthread_t		thread[2];
+	pthread_t		thread[4];
 	pthread_attr_t	attribute;
 	pthread_mutex_t	mutex;
 	pthread_cond_t	cond;

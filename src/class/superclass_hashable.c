@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_remove.c                                       :+:      :+:    :+:   */
+/*   superclass_hashable.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/13 21:51:52 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/14 15:21:36 by afeuerst         ###   ########.fr       */
+/*   Created: 2017/04/14 16:23:00 by afeuerst          #+#    #+#             */
+/*   Updated: 2017/04/14 16:27:12 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/shell.h"
+#include "../../includes/shell.h"
 
-int				env_remove(t_environ *const env, const char *key)
+void				*ft_hashable_ctor(const void *const self, ...)
 {
-	extern char	**environ;
-	char		**ptr;
+	t_hashable		*new;
 
-	ptr = environ;
-	if (!ptr)
-		return (1);
-	while (*ptr)
-	{
-		;
-	}
-	return (0);
+	new = malloc(sizeof(t_hashable));
+	if (!new)
+		return (NULL);
+	return (new);
+}
+
+void				ft_hashable_dtor(void *const self)
+{
+	(void)self;
 }

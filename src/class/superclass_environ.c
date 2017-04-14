@@ -6,70 +6,67 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 13:56:38 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/13 22:18:33 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/14 21:05:23 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/shell.h"
 
-static int					ft_change_key(const char *key, const char *value)
+static size_t				ft_count(size_t default_value)
 {
 	extern char				**environ;
 	char					**ptr;
-	size_t					len;
 
-	len = LENS(key);
 	ptr = environ;
-	if (!environ || !*environ)
-		return (1);
-	while (*ptr)
-	{
-		if (!ft_strncmp(key, *ptr, len))
-		{
-			free(*ptr);
-			*ptr = ft_strincjoin(key, value, '=',
-					malloc(len + LENS(value) + 2));
-			return (0);
-		}
-		ptr++;
-	}
-	return (1);
+	if (!ptr || !*ptr)
+		return (0);
+	while (*ptr++)
+		default_value++;
+	return (default_value);
 }
 
-static void					ft_load(void)
+static void					ft_load(t_environ *const env)
 {
 	extern char				**environ;
-	char					**new;
 	char					**ptr;
+	size_t					count;
+	char					**new;
 
-	new = malloc(sizeof(char*) * env_count());
-	if (!new || !environ || !*environ)
+	count = env->count(0);
+	new = malloc(sizeof(char*) * (count + 1 + ENV_SPACE_AVAILABLE));
+	if (!count || !(ptr = new))
 	{
-		env_get_default();
+		if (new)
+			free(new);
+		env_get_default(env);
 		return ;
 	}
-	ptr = new;
-	while (*environ)
-		*new++ = ft_strsub(*environ++);
-	*new = NULL;
-	environ = ptr;
+	while ((*ptr++ = ft_strsub(*environ++)))
+		continue ;
+	environ = new;
+	env->size = ENV_SPACE_AVAILABLE + count;
 }
 
 void						*ft_environ_ctor(const void *const self, ...)
 {
-	t_environ				*environ;
+	t_environ				*env;
+	extern char				**environ;
 
-	environ = (t_environ*)malloc(sizeof(t_environ));
-	if (!environ)
+	env = (t_environ*)malloc(sizeof(t_environ));
+	ft_memset((int8_t*)env, 0, sizeof(t_environ));
+	if (!env)
 		return (NULL);
-	ft_load();
-	environ->based_class = self;
-	environ->get_required = env_guard;
-	environ->modify = ft_change_key;
-	environ->remove = env_remove;
-	environ->append = env_append;
-	environ->get_required();
-	return (environ);
+	env->based_class = self;
+	env->get_required = env_guard;
+	env->count = ft_count;
+	env->remove = env_remove;
+	env->append = env_append;
+	env->expand = env_expand;
+	env->sort = env_sshell;
+	ft_load(env);
+	env->get_required(env);
+	env->sort(env->count(0), environ, 1);//env->sort_type);
+	return (env);
 }
 
 void						ft_environ_dtor(void *const self)

@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/28 17:54:34 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/03/28 18:03:18 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/14 15:24:35 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char			*ft_strsub(const char *src)
 
 	new = malloc(sizeof(char) * (LENS(src) + 1));
 	ptr = new;
-	if (new == NULL)
+	if (new == NULL || src == NULL)
 		return (NULL);
 	while (*src)
 		*ptr++ = *src++;
