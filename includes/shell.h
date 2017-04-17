@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 18:13:33 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/14 20:59:50 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/17 14:40:59 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/wait.h>
 # include <sys/ioctl.h>
 # include <sys/types.h>
+# include <sys/stat.h>
 # include <term.h>
 # include <termios.h>
 # include <pwd.h>
@@ -50,7 +51,6 @@ typedef struct		s_class
 
 typedef struct s_display	t_display;
 typedef struct s_dispatch	t_dispatch;
-typedef struct s_cmd		t_cmd;
 typedef struct s_environ	t_environ;
 typedef struct s_hashable	t_hashable;
 /*
@@ -123,6 +123,7 @@ struct				s_environ
 	int				(*remove)(t_environ *const env, const char *key);
 	void			(*append)(t_environ *const env, const char *full_value);
 	void			(*expand)(t_environ *const env, const size_t count);
+	char			*(*value)(const char *key);
 	void			(*sort)(const int count, char **array, const int func);
 };
 void				*ft_environ_ctor(const void *const self, ...);
@@ -158,29 +159,22 @@ char				*guard_underscore(const t_guard_struct guard);
 # define GUARD_COUNT 5
 
 /*
-** struct s_cmd { }; superclass
-*/
-
-typedef void		(*t_fbuiltins)(void *const self);
-
-struct				s_cmd
-{
-	const void		*based_class;
-	char			**args;
-	t_fbuiltins		builtin;
-};
-void				*ft_cmd_ctor(const void *const self, ...);
-void				ft_cmd_dtor(void *const self);
-
-/*
 ** struct hashable { }; subclass
 */
+
 struct				s_hashable
 {
 	const void		*based_class;
+	char			**array;
+	size_t			size;
+	size_t			(*key)(const char *key);
+	void			(*set)(t_hashable *const hash, const char *key, char *data);
+	char			*(*get)(t_hashable *const hash, const char *key);
 };
 void				*ft_hashable_ctor(const void *const self, ...);
 void				ft_hashable_dtor(void *const self);
+
+size_t				ft_bin_count(t_dispatch *const dispatch);
 
 /*
 ** struct s_dispatch { }; subclass
@@ -193,6 +187,7 @@ struct				s_dispatch
 	const void		*based_class;
 	t_display		*display;
 	t_environ		*environ;
+	t_hashable		*hashtable;
 	pthread_t		thread[4];
 	pthread_attr_t	attribute;
 	pthread_mutex_t	mutex;
@@ -204,12 +199,28 @@ void				ft_dispatch_dtor(void *const self);
 
 void				ft_start(t_dispatch *const dispatch);
 
+
 /*
-** PTHREAD routines
+** builtins
+*/
+
+# define BUILTINS_COUNT 5
+
+typedef int			(*t_fbuiltins)(t_dispatch *const dispatch);
+
+int					built_env(t_dispatch *const dispatch);
+int					built_unsetenv(t_dispatch *const dispatch);
+int					built_setenv(t_dispatch *const dispatch);
+int					built_cd(t_dispatch *const dispatch);
+int					built_echo(t_dispatch *const dispatch);
+
+/*
+** pthread
 */
 
 typedef void		*(*t_task)(void *argument);
 
 void				*task_display_init(void *arg);
 void				*task_environ_init(void *arg);
+void				*task_hashable_init(void *arg);
 #endif

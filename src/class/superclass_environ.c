@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 13:56:38 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/14 21:05:23 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/17 14:48:02 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,26 @@ static void					ft_load(t_environ *const env)
 	env->size = ENV_SPACE_AVAILABLE + count;
 }
 
+static char					*ft_value(const char *key)
+{
+	extern char				**environ;
+	char					**ptr;
+	const char				*ptr_value;
+	char					*cmp;
+
+	ptr = environ;
+	while (*ptr)
+	{
+		ptr_value = key;
+		cmp = *ptr++;
+		while (*ptr_value)
+		{
+			if (*
+		}
+	}
+	return (NULL);
+}
+
 void						*ft_environ_ctor(const void *const self, ...)
 {
 	t_environ				*env;
@@ -58,6 +78,7 @@ void						*ft_environ_ctor(const void *const self, ...)
 		return (NULL);
 	env->based_class = self;
 	env->get_required = env_guard;
+	env->value = ft_value;
 	env->count = ft_count;
 	env->remove = env_remove;
 	env->append = env_append;
@@ -65,7 +86,7 @@ void						*ft_environ_ctor(const void *const self, ...)
 	env->sort = env_sshell;
 	ft_load(env);
 	env->get_required(env);
-	env->sort(env->count(0), environ, 1);//env->sort_type);
+	env->sort(env->count(0), environ, env->sort_type);
 	return (env);
 }
 
