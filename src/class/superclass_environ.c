@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 13:56:38 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/17 14:48:02 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/18 14:51:13 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,28 @@ static void					ft_load(t_environ *const env)
 	env->size = ENV_SPACE_AVAILABLE + count;
 }
 
-static char					*ft_value(const char *key)
+static const char			*ft_value(const char *key)
 {
 	extern char				**environ;
 	char					**ptr;
-	const char				*ptr_value;
-	char					*cmp;
+	const char				*cmp;
+	char					*cmp_env;
 
 	ptr = environ;
+	if (!ptr)
+		return (NULL);
 	while (*ptr)
 	{
-		ptr_value = key;
-		cmp = *ptr++;
-		while (*ptr_value)
+		cmp_env = *ptr++;
+		cmp = key;
+		while (*cmp && *cmp_env)
 		{
-			if (*
+			if (*cmp_env == '=')
+				return (cmp);
+			else if (*cmp_env != *cmp)
+				break ;
+			cmp++;
+			cmp_env++;
 		}
 	}
 	return (NULL);

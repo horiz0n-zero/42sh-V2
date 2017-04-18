@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/28 19:32:10 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/17 14:41:27 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/18 14:53:39 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void					ft_start(t_dispatch *const dispatch)
 		return ;
 	//ft_print_env();
 	write(1, "\n", 1);
-	char *path = dispatch->environ->value("PATH");
+	const char *path = dispatch->environ->value("PATH");
 	if (path)
 		write(1, path, LENS(path));
 	else

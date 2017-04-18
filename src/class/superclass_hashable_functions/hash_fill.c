@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 13:42:58 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/17 14:39:39 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/18 14:53:15 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ static void			ft_fill_split(t_hashable *const hash, const char *path)
 void				hash_fill(t_dispatch *const dispatch)
 {
 	char			**split;
-	char			*path;
+	const char		*path;
 
-	path = dispatch->environ->value(dispatch->environ, "PATH");
-	split = ft_strsplit(path, ft_isdoublepoint);
+	path = dispatch->environ->value("PATH");
+	split = ft_strsplit(ft_strsub(path), ft_isdoublepoint);
 	if (!split || !*split)
 		return ;
 	while (*split)

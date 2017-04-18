@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 18:13:33 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/17 14:40:59 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/18 14:51:11 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ struct				s_environ
 	int				(*remove)(t_environ *const env, const char *key);
 	void			(*append)(t_environ *const env, const char *full_value);
 	void			(*expand)(t_environ *const env, const size_t count);
-	char			*(*value)(const char *key);
+	const char		*(*value)(const char *key);
 	void			(*sort)(const int count, char **array, const int func);
 };
 void				*ft_environ_ctor(const void *const self, ...);

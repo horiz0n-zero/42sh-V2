@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 13:15:09 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/17 13:45:02 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/18 14:52:46 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ static size_t		ft_look(const char *split)
 
 size_t				ft_bin_count(t_dispatch *const dispatch)
 {
-	char			*path;
+	const char		*path;
 	char			**split;
 	size_t			count;
 	char			**save;
 
 	count = 0;
-	path = dispatch->environ->value(dispatch->environ, "PATH");
-	split = ft_strsplit(path, ft_isdoublepoint);
+	path = dispatch->environ->value("PATH");
+	split = ft_strsplit(ft_strsub(path), ft_isdoublepoint);
 	save = split;
 	if (split == NULL || *split == NULL)
 		return (0);
