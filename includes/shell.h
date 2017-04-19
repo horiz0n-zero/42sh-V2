@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 18:13:33 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/18 14:51:11 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/19 14:59:14 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <dirent.h>
-
+# include <sys/utsname.h>
 # include <pthread.h>
 
 # include "utility.h"
 # include "signal.h"
-
+# include "print.h"
 
 /*
 ** struct s_class { }; based_class
@@ -65,6 +65,7 @@ struct				s_display
 	struct termios	origin;
 	struct termios	term;
 	struct winsize	screen;
+	struct utsname	name;
 	int				prompt_pos;
 	int				index;
 	char			buffer[MAX_DISPLAY_CHAR];

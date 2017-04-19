@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 18:20:44 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/03/28 17:37:24 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/19 12:14:00 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static void		ft_push_functions(t_display *const display)
 	display->my = ft_my;
 	ft_memset_ll((int64_t*)display->buffer, 0, MAX_DISPLAY_CHAR / 8);
 	display->index = 0;
+	uname(&display->name);
 }
 
 void			*ft_display_ctor(const void *const self, ...)
