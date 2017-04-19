@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/19 14:15:48 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/19 15:01:30 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/19 15:23:02 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void				ft_dfunc(const uint64_t raw, char *buffer)
 	int				nb;
 	int				number;
 
-	number = *((int*)raw);
+	number = *((int*)&raw);
 	if (number < 0)
 	{
 		number = -number;

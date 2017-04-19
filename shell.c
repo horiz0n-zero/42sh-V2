@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 18:13:16 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/19 15:01:16 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/19 15:21:59 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int						main(void)
 	dispatch->display->apply(1, "cl");
 	ft_minishell();
 	dispatch->display->prompt(dispatch, PR_SUCCESS);
+	print("il y a %s %d lapins\n", 2, "coucou", 42);
 	ft_while(dispatch);
 	return (0);
 }

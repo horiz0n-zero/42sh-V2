@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/28 19:32:10 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/19 15:02:19 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/19 15:21:05 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,5 @@ void					ft_start(t_dispatch *const dispatch)
 	//	write(1, path, LENS(path));
 	//else
 	//	write(1, "NULL", 4);
-	print("coucouocuoccuocuouco", 0);
 	dispatch->display->prompt(dispatch, PR_SUCCESS);
 }

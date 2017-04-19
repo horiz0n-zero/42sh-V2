@@ -6,7 +6,7 @@
 #    By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/27 18:05:12 by afeuerst          #+#    #+#              #
-#    Updated: 2017/04/19 15:08:42 by afeuerst         ###   ########.fr        #
+#    Updated: 2017/04/19 15:18:52 by afeuerst         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ PRINT = @printf "\e[34m%-30s -->\e[32m> %-30s\n" $@ $<
 all: $(NAME)
 
 $(NAME):
-	@clang $(FLAGS) $(I) $(C_SRC) shell.c -o $(NAME)
+	@clang $(I) $(C_SRC) shell.c -o $(NAME)
 	@printf "\e[33m%s is now available\e[37m\n" $(NAME)
 
 clean:

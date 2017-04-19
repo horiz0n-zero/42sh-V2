@@ -6,16 +6,11 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 18:42:24 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/19 12:10:16 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/19 15:14:14 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/shell.h"
-
-static const t_class		g_description_environ =
-{
-	sizeof(t_environ), ft_environ_ctor, ft_environ_dtor
-};
 
 void						ft_dispatch_dtor(void *const self)
 {
