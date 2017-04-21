@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 13:56:38 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/19 10:54:25 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/21 12:19:27 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,25 +51,28 @@ static const char			*ft_value(const char *key)
 {
 	extern char				**environ;
 	char					**ptr;
-	const char				*cmp;
-	char					*cmp_env;
+	const char				*save;
+	char					*env;
 
+	save = key;
 	ptr = environ;
 	if (!ptr)
 		return (NULL);
 	while (*ptr)
 	{
-		cmp_env = *ptr++;
-		cmp = key;
-		while (*cmp)
+		env = *ptr++;
+		while (*env && *key)
 		{
-			if (*cmp_env != *cmp)
+			if (*env != *key)
 				break ;
-			else if (*cmp_env == '=')
-				return (++cmp_env);
-			cmp++;
-			cmp_env++;
+			env++;
+			key++;
 		}
+		key = save;
+		if (*env != '=')
+			continue ;
+		else
+			return (++env);
 	}
 	return (NULL);
 }

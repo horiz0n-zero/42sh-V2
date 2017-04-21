@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 18:13:33 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/19 14:59:14 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/21 17:37:09 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <term.h>
+# include <time.h>
 # include <termios.h>
 # include <pwd.h>
 # include <uuid/uuid.h>
@@ -175,8 +176,8 @@ struct				s_hashable
 void				*ft_hashable_ctor(const void *const self, ...);
 void				ft_hashable_dtor(void *const self);
 
-size_t				ft_bin_count(t_dispatch *const dispatch);
-
+size_t				ft_bin_count(const t_environ *const env);
+void				hash_fill(t_hashable *const hash, t_environ *const env);
 /*
 ** struct s_dispatch { }; subclass
 */
@@ -205,15 +206,22 @@ void				ft_start(t_dispatch *const dispatch);
 ** builtins
 */
 
-# define BUILTINS_COUNT 5
+# define BUILTINS_COUNT 6
 
-typedef int			(*t_fbuiltins)(t_dispatch *const dispatch);
+typedef int			(*const t_fbuiltins)(t_dispatch *const dispatch);
+
+typedef struct		s_hashb
+{
+	t_fbuiltins		built;
+	const char		*const text;
+}					t_hashb;
 
 int					built_env(t_dispatch *const dispatch);
 int					built_unsetenv(t_dispatch *const dispatch);
 int					built_setenv(t_dispatch *const dispatch);
 int					built_cd(t_dispatch *const dispatch);
 int					built_echo(t_dispatch *const dispatch);
+int					built_exit(t_dispatch *const dispatch);
 
 /*
 ** pthread

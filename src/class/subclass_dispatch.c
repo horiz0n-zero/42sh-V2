@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 18:42:24 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/19 15:14:14 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/21 16:08:05 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void						*ft_dispatch_ctor(const void *const self, ...)
 	if (pthread_create(&new->thread[0], &new->attribute, task_display_init, NULL))
 		write(2, "#threadError\n", 13);
 	pthread_join(new->thread[1], (void*)&new->environ);
-	if (pthread_create(&new->thread[2], &new->attribute, task_hashable_init, NULL))
+	if (pthread_create(&new->thread[2], &new->attribute, task_hashable_init, new->environ))
 		write(2, "#threadError\n", 13);
 	pthread_join(new->thread[2], (void*)&new->hashtable);
 	pthread_join(new->thread[0], (void*)&new->display);

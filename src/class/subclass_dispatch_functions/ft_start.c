@@ -6,39 +6,70 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/28 19:32:10 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/21 11:15:28 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/21 17:24:09 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static void				ft_print_env(void)
+static const t_hashb	g_hash_builtins[] =
 {
-	extern char			**environ;
-	char				**ptr;
+	{built_env, "env"},
+	{built_unsetenv, "unsetenv"},
+	{built_setenv, "setenv"},
+	{built_cd, "cd"},
+	{built_echo, "echo"},
+	{built_exit, "exit"},
+	{built_exit, "quit"},
+	{NULL, NULL}
+};
 
-	ptr = environ;
-	while (*ptr)
+static bool				compare(const char *s1, const char *s2)
+{
+	while (*s1 && *s2)
 	{
-		write(1, *ptr, LENS(*ptr));
-		write(1, "\n", 1);
-		ptr++;
+		if (*s1 != *s2)
+			return (false);
+		s1++;
+		s2++;
+	}
+	if (*s1 != *s2)
+		return (false);
+	return (true);
+}
+
+static void				ft_lookfor(t_dispatch *const dispatch, char **split)
+{
+	const t_hashb		*array = (const t_hashb*)&g_hash_builtins;
+
+	while (array->built)
+	{
+		if (compare(array->text, *split))
+		{
+			return ;
+			array->built(dispatch);
+		}
+		array++;
 	}
 }
 
 void					ft_start(t_dispatch *const dispatch)
 {
 	char				**split;
+	void				*wfree;
+	char				*found;
 
 	split = ft_strsplit(dispatch->display->buffer, ft_isspace);
 	if (split == NULL || *split == NULL)
 		return ;
-	//ft_print_env();
-	//write(1, "\n", 1);
-	//const char *path = dispatch->environ->value("TERM");
-	//if (path)
-	//	write(1, path, LENS(path));
-	//else
-	//	write(1, "NULL", 4);
-	dispatch->display->prompt(dispatch, PR_SUCCES);
+	wfree = split;
+	found = dispatch->hashtable->get(dispatch->hashtable, *split);
+	if (found == NULL)
+		ft_lookfor(dispatch, split);
+	else
+	{
+		print("found : %P %s \n", 2, found, found);
+	}
+	dispatch->display->prompt(dispatch, PR_SUCCESS);
+	free(split);
 }

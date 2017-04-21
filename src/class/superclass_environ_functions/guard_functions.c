@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 17:27:55 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/13 17:52:22 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/21 11:55:45 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ char			*guard_pwd(const t_guard_struct guard)
 
 char			*guard_shlvl(const t_guard_struct guard)
 {
+	(void)guard;
 	return (ft_strsub("SHLVL=1"));
 }
 

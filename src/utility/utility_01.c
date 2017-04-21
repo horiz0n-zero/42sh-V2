@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/28 17:54:34 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/14 15:24:35 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/21 14:37:28 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char			**ft_strsplit(char *str, int (*f)(int))
 
 	c = (char**)malloc(sizeof(char*) * (ft_count(str, f)));
 	ptr = c;
-	if (!ptr)
+	if (!ptr || !str)
 		return (NULL);
 	while (*str)
 	{

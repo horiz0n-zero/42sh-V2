@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/19 14:15:48 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/21 11:03:40 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/21 16:58:50 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ size_t				ft_dlen(va_list *args, uint64_t *raw, size_t *size)
 	int				nb;
 	size_t			len;
 
-	len = 0;
+	len = 1;
 	nb = (int)va_arg(*args, int);
 	*raw = (uint64_t)nb & 0xFFFFFFFF;
 	if (nb < 0)
@@ -68,6 +68,8 @@ void				ft_sfunc(const uint64_t raw, char *buffer)
 	char			*str;
 
 	str = (char*)raw;
+	if (!str)
+		str = "(NULL)";
 	while (*str)
 		*buffer++ = *str++;
 	*buffer = 0;
@@ -78,9 +80,11 @@ size_t				ft_slen(va_list *args, uint64_t *raw, size_t *size)
 	char			*str;
 	size_t			len;
 
-	len = 0;
+	len = 1;
 	*raw = (uint64_t)(void*)va_arg(*args, void*);
 	str = (char*)*raw;
+	if (!str)
+		str = "(NULL)";
 	while (*str++)
 		len++;
 	*size = *size + len;

@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 16:38:47 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/14 21:04:20 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/21 11:54:40 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static const t_guard_struct		g_guard_required[] =
 
 static size_t					iskeyofvalue(const char *key)
 {
-	const t_guard_struct *const	array = g_guard_required;
 	size_t						index;
 	const char					*ptr;
 	const char					*cmp;

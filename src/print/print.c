@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/19 13:45:51 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/19 15:08:11 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/21 17:25:06 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 static const t_printf	g_print_functions[] =
 {
-	['c'] = NULL,
+	['P'] = ft_ppfunc,
+	['p'] = ft_pfunc,
 	['s'] = ft_sfunc,
 	['d'] = ft_dfunc,
 	['u'] = NULL
@@ -23,7 +24,8 @@ static const t_printf	g_print_functions[] =
 
 static const t_printlen	g_pr_len[] =
 {
-	['c'] = NULL,
+	['P'] = ft_plen,
+	['p'] = ft_plen,
 	['s'] = ft_slen,
 	['d'] = ft_dlen,
 	['u'] = NULL
@@ -72,8 +74,8 @@ void					print(const char *string, int instructions, ...)
 		size++;
 		if (*string++ == '%')
 		{
-			board[instructions] = ALLOC(g_pr_len[*string](&args, &raw, &size));
-			g_print_functions[*string++](raw, board[instructions++]);
+			board[instructions] = ALLOC(g_pr_len[(int)*string](&args, &raw, &size));
+			g_print_functions[(int)*string++](raw, board[instructions++]);
 		}
 	}
 	join_print(board, str, size);

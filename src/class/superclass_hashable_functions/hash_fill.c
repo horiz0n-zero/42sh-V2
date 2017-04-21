@@ -6,45 +6,45 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 13:42:58 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/18 14:53:15 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/21 17:43:49 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/shell.h"
 
-
-
-static void			ft_fill_split(t_hashable *const hash, const char *path)
+static void				hash_search(t_hashable *const hash, const char *path)
 {
-	DIR				*reper;
-	struct dirent	*tmp;
-	char			*join;
-	char			buffer[8096];
-	struct stat		chat;
+	DIR					*rep;
+	struct dirent		*tmp;
+	struct stat			c;
+	char				*data;
 
-	reper = opendir(path);
-	while ((tmp = readdir(reper)))
+	rep = opendir(path);
+	while ((tmp = readdir(rep)))
 	{
-		join = ft_strincjoin(path, tmp->d_name, '/', buffer);
-		stat(join, &chat);
-		if (!S_ISREG(chat.st_mode) ||
-			!(S_IXGRP & chat.st_mode) ||
-			!(S_IXUSR & chat.st_mode))
-			continue ;
-		hash->set(hash, tmp->d_name, ft_strsub(join));
+		data = ft_strcjoin(path, tmp->d_name, '/');
+		stat(data, &c);
+		if (S_ISREG(c.st_mode) && c.st_mode & S_IXUSR && !(*tmp->d_name == '.'))
+			hash->set(hash, tmp->d_name, data);
+		else
+			free(data);
 	}
-	closedir(reper);
+	closedir(rep);
 }
 
-void				hash_fill(t_dispatch *const dispatch)
+void					hash_fill(t_hashable *const hash, t_environ *const env)
 {
-	char			**split;
-	const char		*path;
+	char				*path;
+	char				**split;
+	void				*wfree;
 
-	path = dispatch->environ->value("PATH");
-	split = ft_strsplit(ft_strsub(path), ft_isdoublepoint);
-	if (!split || !*split)
+	path = ft_strsub(env->value("PATH"));
+	split = ft_strsplit(path, ft_isdoublepoint);
+	if (!split)
 		return ;
+	wfree = split;
 	while (*split)
-		ft_fill_split(dispatch->hashtable, *split++);
+		hash_search(hash, *split++);
+	free(path);
+	free(wfree);
 }

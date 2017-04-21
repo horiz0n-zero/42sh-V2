@@ -1,24 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tasks_hashable.c                                   :+:      :+:    :+:   */
+/*   built_setenv.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/19 10:56:45 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/21 14:19:50 by afeuerst         ###   ########.fr       */
+/*   Created: 2017/04/21 14:27:38 by afeuerst          #+#    #+#             */
+/*   Updated: 2017/04/21 14:32:25 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "../../includes/shell.h"
 
-static const t_class	g_description_hashable =
+int			built_setenv(t_dispatch *const dispatch)
 {
-	sizeof(t_hashable), ft_hashable_ctor, ft_hashable_dtor
-};
-
-void					*task_hashable_init(void *arg)
-{
-	arg = g_description_hashable.ctor(&g_description_hashable, arg);
-	return (arg);
+	dispatch->environ->append(dispatch->environ, "coco=setenv_ok");
+	return (0);
 }

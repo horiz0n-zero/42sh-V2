@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/28 21:12:42 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/12 22:28:32 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/21 11:57:09 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static void						sfunc_sigquit(void)
 
 static const t_signal_function	g_functions[] =
 {
-	[SIGINT] = NULL,
-	[SIGQUIT] = NULL
+	[SIGINT] = sfunc_sigint,
+	[SIGQUIT] = sfunc_sigquit
 };
 
 void							ft_do_nothing(int signal)

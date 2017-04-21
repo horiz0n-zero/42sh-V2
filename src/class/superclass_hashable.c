@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 16:23:00 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/18 14:43:49 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/21 14:46:43 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,22 @@ static char			*ft_get(t_hashable *const hash, const char *key)
 void				*ft_hashable_ctor(const void *const self, ...)
 {
 	t_hashable		*new;
+	va_list			args;
+	t_environ		*env;
 
+	va_start(args, self);
+	env = va_arg(args, void*);
 	new = malloc(sizeof(t_hashable));
 	if (!new)
 		return (NULL);
+	new->based_class = self;
 	new->key = ft_hashkey;
 	new->get = ft_get;
 	new->set = ft_set;
-	new->size = 0; //todo//
+	new->size = ft_bin_count(env);
 	new->array = malloc(sizeof(char*) * new->size);
 	ft_memset_ll((int64_t*)new->array, 0, new->size);
+	hash_fill(new, env);
 	return (new);
 }
 

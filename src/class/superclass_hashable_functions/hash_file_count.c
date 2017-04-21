@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 13:15:09 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/18 14:52:46 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/21 17:44:46 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static size_t		ft_look(const char *split)
 	DIR				*rep;
 	size_t			count;
 
-	count = 0;
+	count = 1;
 	rep = opendir(split);
 	while (readdir(rep))
 		count++;
@@ -25,23 +25,22 @@ static size_t		ft_look(const char *split)
 	return (count);
 }
 
-size_t				ft_bin_count(t_dispatch *const dispatch)
+size_t				ft_bin_count(const t_environ *const env)
 {
-	const char		*path;
-	char			**split;
 	size_t			count;
-	char			**save;
+	char			**split;
+	void			*ptr;
+	char			*path;
 
-	count = 0;
-	path = dispatch->environ->value("PATH");
-	split = ft_strsplit(ft_strsub(path), ft_isdoublepoint);
-	save = split;
-	if (split == NULL || *split == NULL)
-		return (0);
+	path = ft_strsub(env->value("PATH"));
+	count = 1 + BUILTINS_COUNT;
+	split = ft_strsplit(path, ft_isdoublepoint);
+	if (!split)
+		return (count);
+	ptr = split;
 	while (*split)
-	{
 		count += ft_look(*split++);
-	}
-	free(save);
+	free(ptr);
+	free(path);
 	return (count);
 }
