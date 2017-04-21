@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/28 15:54:34 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/19 12:20:33 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/21 11:11:32 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,8 @@
 
 static void			ft_succes(t_dispatch *const dispatch, char *const buffer)
 {
-	write(1, "\e[32m< ", sizeof("\e[32m< "));
-	write(1, buffer, LENS(buffer));
-	write(1, " [ ", 3);
-	write(1, dispatch->display->name.nodename,
-			LENS(dispatch->display->name.nodename));
-	write(1, " ]", 2);
-	write(1, "\n> \e[37m", 8);
+	print("\e[32m< %s > %s \n> \e[37m", 2, buffer,
+			dispatch->display->name.nodename);
 	dispatch->display->index = 0;
 	dispatch->display->prompt_pos = 2;
 	ft_memset_ll((int64_t*)dispatch->display->buffer, 0,
@@ -29,9 +24,7 @@ static void			ft_succes(t_dispatch *const dispatch, char *const buffer)
 
 static void			ft_failed(t_dispatch *const dispatch, char *const buffer)
 {
-	write(1, "\e[32m< ", sizeof("\e[32m< "));
-	write(1, buffer, LENS(buffer));
-	write(1, "\n\e[31m>> \e[37m", sizeof("\n\e[31m>> \e[37m"));
+	print("\e[32m< %s\n\e[31m>> \e[37m", 1, buffer);
 	dispatch->display->index = 0;
 	dispatch->display->prompt_pos = 2;
 	ft_memset_ll((int64_t*)dispatch->display->buffer, 0,
@@ -40,9 +33,7 @@ static void			ft_failed(t_dispatch *const dispatch, char *const buffer)
 
 static void			ft_quotes(t_dispatch *const dispatch, char *const buffer)
 {
-	write(1, "\e[32m< ", sizeof("\e[32m< "));
-	write(1, buffer, LENS(buffer));
-	write(1, "\n\e[34mquotes >\e[37m", sizeof("\n\e[34mquotes >\e[37m"));
+	print("\e[32m< %s\n\e[34mquotes >\e[37m", 1, buffer);
 	dispatch->display->prompt_pos = 8;
 }
 
