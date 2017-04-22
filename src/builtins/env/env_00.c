@@ -1,21 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_exit.c                                       :+:      :+:    :+:   */
+/*   env_00.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/21 14:30:57 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/22 15:55:17 by afeuerst         ###   ########.fr       */
+/*   Created: 2017/04/22 15:13:56 by afeuerst          #+#    #+#             */
+/*   Updated: 2017/04/22 15:24:37 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/shell.h"
+#include "../../../includes/shell.h"
 
-int			built_exit(t_dispatch *const dispatch, char **argv)
+int				env_i(t_dispatch *const dispatch, char **argv)
 {
-	//((t_class*)dispatch)->dtor(dispatch);
+	extern char	**environ;
+	char		**ptr;
+
+	ptr = environ;
+	if (!environ)
+		return (1);
 	(void)dispatch;
 	(void)argv;
-	exit(0);
+	while (*ptr)
+	{
+		free(*ptr);
+		*ptr++ = NULL;
+	}
+	free(environ);
+	environ = NULL;
+	return (0);
 }

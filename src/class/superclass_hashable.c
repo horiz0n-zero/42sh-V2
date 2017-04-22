@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 16:23:00 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/21 14:46:43 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/22 15:40:46 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,27 @@ static void			ft_set(t_hashable *const hash, const char *key, char *data)
 
 static char			*ft_get(t_hashable *const hash, const char *key)
 {
-	return (hash->array[hash->key(key) % hash->size]);
+	char			*data;
+	char			*cmp;
+	const char		*save;
+
+	save = key;
+	data = hash->array[hash->key(key) % hash->size];
+	if (data)
+	{
+		cmp = data;
+		while (*cmp)
+			cmp++;
+		while (*key)
+			key++;
+		while (key > save && cmp > data && *key != '/')
+		{
+			if (*--key != *--cmp)
+				return (NULL);
+		}
+		return (data);
+	}
+	return (NULL);
 }
 
 void				*ft_hashable_ctor(const void *const self, ...)
@@ -58,21 +78,27 @@ void				*ft_hashable_ctor(const void *const self, ...)
 	new->array = malloc(sizeof(char*) * new->size);
 	ft_memset_ll((int64_t*)new->array, 0, new->size);
 	hash_fill(new, env);
+	new->rm = ft_hash_rm;
+	new->refresh = hash_refresh;
 	return (new);
 }
 
 void				ft_hashable_dtor(void *const self)
 {
 	t_hashable		*hash;
-	size_t			index;
+	char			**array;
+	size_t			size;
 
-	index = 0;
-	hash = (t_hashable*)self;
-	while (hash->size--)
+	hash = self;
+	if (!hash->array)
+		return ;
+	array = hash->array;
+	size = hash->size;
+	while (size-- > 0)
 	{
-		if (hash->array[index])
-		{
-			;
-		}
+		if (*array)
+			free(*array);
+		array++;
 	}
+	free(array);
 }

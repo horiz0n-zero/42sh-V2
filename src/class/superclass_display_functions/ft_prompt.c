@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/28 15:54:34 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/21 17:52:53 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/22 10:18:21 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void			ft_succes(t_dispatch *const dispatch, char *const buffer)
 	time_t			t;
 
 	t = time(0);
-	print("\e[32m< %s > %s \e[33m< %s\e[32m> \e[37m", 3, buffer,
+	print("\e[32m< %s > %s \e[31m< %s\e[32m> \e[37m", 3, buffer,
 			dispatch->display->name.nodename, ctime(&t));
 	dispatch->display->index = 0;
 	dispatch->display->prompt_pos = 2;

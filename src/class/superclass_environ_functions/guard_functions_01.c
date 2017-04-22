@@ -1,21 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_exit.c                                       :+:      :+:    :+:   */
+/*   guard_functions_01.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/21 14:30:57 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/22 15:55:17 by afeuerst         ###   ########.fr       */
+/*   Created: 2017/04/22 13:29:23 by afeuerst          #+#    #+#             */
+/*   Updated: 2017/04/22 14:42:54 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/shell.h"
+#include "shell.h"
 
-int			built_exit(t_dispatch *const dispatch, char **argv)
+char						*guard_home(const t_guard_struct guard)
 {
-	//((t_class*)dispatch)->dtor(dispatch);
-	(void)dispatch;
-	(void)argv;
-	exit(0);
+	struct passwd			*pass;
+	char					*new;
+
+	(void)guard;
+	pass = getpwuid(getuid());
+	new = malloc(sizeof(char) * (LENS(pass->pw_dir) + 1));
+	if (!new)
+		return (NULL);
+	ft_memmove((int8_t*)new, (const int8_t*)pass->pw_dir, LENS(pass->pw_dir));
+	return (new);
 }

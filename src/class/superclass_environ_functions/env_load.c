@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 16:38:47 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/21 11:54:40 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/22 14:35:01 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static const t_guard_struct		g_guard_required[] =
 	{4, "PATH", guard_path},
 	{3, "PWD", guard_pwd},
 	{5, "SHLVL", guard_shlvl},
-	{1, "_", guard_underscore}
+	{1, "_", guard_underscore},
+	{4, "HOME", guard_home}
 };
 
 static size_t					iskeyofvalue(const char *key)

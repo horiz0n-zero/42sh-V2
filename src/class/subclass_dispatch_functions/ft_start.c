@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/28 19:32:10 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/21 17:24:09 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/22 15:56:22 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,12 @@ static void				ft_lookfor(t_dispatch *const dispatch, char **split)
 	{
 		if (compare(array->text, *split))
 		{
+			array->built(dispatch, split);
 			return ;
-			array->built(dispatch);
 		}
 		array++;
 	}
+	print("Command not found\n", 0);
 }
 
 void					ft_start(t_dispatch *const dispatch)
@@ -58,6 +59,7 @@ void					ft_start(t_dispatch *const dispatch)
 	char				**split;
 	void				*wfree;
 	char				*found;
+	extern char			**environ;
 
 	split = ft_strsplit(dispatch->display->buffer, ft_isspace);
 	if (split == NULL || *split == NULL)
@@ -68,7 +70,7 @@ void					ft_start(t_dispatch *const dispatch)
 		ft_lookfor(dispatch, split);
 	else
 	{
-		print("found : %P %s \n", 2, found, found);
+		;
 	}
 	dispatch->display->prompt(dispatch, PR_SUCCESS);
 	free(split);

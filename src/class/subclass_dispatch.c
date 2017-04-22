@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 18:42:24 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/21 16:08:05 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/22 14:44:33 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,8 @@ void						*ft_dispatch_ctor(const void *const self, ...)
 		write(2, "#threadError\n", 13);
 	pthread_join(new->thread[2], (void*)&new->hashtable);
 	pthread_join(new->thread[0], (void*)&new->display);
+	new->hashtable->rm(new->hashtable, 7,
+			"echo", "setenv", "unsetenv", "env", "cd", "exit", "quit");
+	new->hashtable->set(new->hashtable, "rm", "/bin/rm");
 	return (new);
 }

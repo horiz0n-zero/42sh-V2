@@ -6,14 +6,19 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 14:27:38 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/21 14:32:25 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/22 15:10:42 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/shell.h"
 
-int			built_setenv(t_dispatch *const dispatch)
+int			built_setenv(t_dispatch *const dispatch, char **argv)
 {
-	dispatch->environ->append(dispatch->environ, "coco=setenv_ok");
+	argv++;
+	if (argv && *argv)
+		while (*argv)
+			dispatch->environ->append(dispatch->environ, *argv++);
+	else
+		print("\e[36msetenv \e[32m: remove all $VAR specified\n\e[37m", 0);
 	return (0);
 }

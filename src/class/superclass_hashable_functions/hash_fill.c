@@ -6,11 +6,23 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 13:42:58 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/21 17:43:49 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/22 15:44:38 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/shell.h"
+
+void					ft_hash_rm(t_hashable *const hash, int n, ...)
+{
+	va_list				args;
+
+	va_start(args, n);
+	while (n-- > 0)
+	{
+		hash->array[hash->key(va_arg(args, char*)) % hash->size] = NULL;
+	}
+	va_end(args);
+}
 
 static void				hash_search(t_hashable *const hash, const char *path)
 {
@@ -36,7 +48,7 @@ void					hash_fill(t_hashable *const hash, t_environ *const env)
 {
 	char				*path;
 	char				**split;
-	void				*wfree;
+	void				*wfree; 
 
 	path = ft_strsub(env->value("PATH"));
 	split = ft_strsplit(path, ft_isdoublepoint);
