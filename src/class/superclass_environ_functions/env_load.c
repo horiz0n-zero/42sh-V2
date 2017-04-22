@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 16:38:47 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/22 14:35:01 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/22 16:23:08 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ void							env_guard(t_environ *const env)
 	index = 0;
 	environ_ptr = environ;
 	if (!environ_ptr)
+	{
+		env_get_default(env);
 		return ;
+	}
 	while (*environ_ptr)
 	{
 		if ((key = iskeyofvalue(*environ_ptr)))

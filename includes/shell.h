@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 18:13:33 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/22 15:40:43 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/22 16:14:14 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,9 @@ typedef struct		s_hashb
 }					t_hashb;
 
 int					built_env(t_dispatch *const dispatch, char **argv);
+int					env_n(t_dispatch *const dispatch, char **argv);
+int					env_a(t_dispatch *const dispatch, char **argv);
+int					env_r(t_dispatch *const dispatch, char **argv);
 int					env_i(t_dispatch *const dispatch, char **argv);
 int					built_unsetenv(t_dispatch *const dispatch, char **argv);
 int					built_setenv(t_dispatch *const dispatch, char **argv);
