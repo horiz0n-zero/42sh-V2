@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 18:13:33 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/22 16:14:14 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/24 18:01:14 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ void				hash_refresh(t_dispatch *const dispatch);
 struct 				s_cmd
 {
 	/*
-    ** dispatch required ...
+    ** dispatch + buffer required ...
 	*/
 	const void 		*based_class;
 	t_fbuil 		is_builtin;

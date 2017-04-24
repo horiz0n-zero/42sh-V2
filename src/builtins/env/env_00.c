@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/22 15:13:56 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/22 16:26:01 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/24 19:42:13 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int				env_n(t_dispatch *const dispatch, char **argv)
 	(void)argv;
 	dispatch->environ->kill();
 	env_get_default(dispatch->environ);
+	chdir(dispatch->environ->value("PWD"));
 	return (0);
 }
 

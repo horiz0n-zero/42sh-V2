@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 18:13:16 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/21 14:58:07 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/24 17:57:00 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ int						main(void)
 	dispatch->display->apply(1, "cl");
 	ft_minishell();
 	dispatch->display->prompt(dispatch, PR_SUCCESS);
-	print("%d", 1, dispatch->foreground->groupid);
 	ft_while(dispatch);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 21:42:46 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/21 15:51:55 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/24 19:04:54 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void				ft_set8(const int8_t c, t_dispatch *const dispatch)
 		if (c == ' ')
 			dispatch->display->push_byte(dispatch, ' ');
 		else if (c == '\t')
-			; // ft_select
+			;
 		else if (c == 13 && write(1, "\n", 1))
 		{
 			buffer = dispatch->display->buffer;

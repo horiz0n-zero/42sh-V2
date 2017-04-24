@@ -28,16 +28,20 @@ static bool				compare(const char *s1, const char *s2)
 	return (true);
 }
 
-static t_fbuil			cmd_isbuilt(char **split)
+static t_fbuil			cmd_isbuilt(t_cmd *const cmd, char **split)
 {
 	const t_hashb		*array = (const t_hashb*)&g_hash_builtins;
 
 	while (array->built)
 	{
 		if (compare(array->text, *split))
+		{
+			cmd->argv = split;
 			return (array->built);
+		}
 		array++;
 	}
+	cmd->argv = split;
 	return (NULL);
 }
 
@@ -55,7 +59,7 @@ static void 	cmd_add_argv(t_dispatch *const dispatch, t_cmd *const cmd, char *bu
 	path = dispatch->hashtable->get(dispatch->hashtable, *split);
 	if (!path)
 	{
-		if (!(cmd->is_builtin = cmd_isbuilt(split)))
+		if (!(cmd->is_builtin = cmd_isbuilt(cmd, split)))
 			cmd->is_ok = false;
 		else
 			cmd->is_ok = true;
@@ -79,6 +83,9 @@ void 			*ft_cmd_ctor(const void *const self, ...)
 	dispatch = va_arg(args, t_dispatch*);
 	new->based_class = self;
 	new->is_builtin = NULL;
+	new->stdin = STDIN_FILENO;
+	new->stdout = STDOUT_FILENO;
+	new->stderr = STDERR_FILENO;
 	cmd_add_argv(dispatch, new, va_arg(args, char*));
 	va_end(args);
 	return (new);
@@ -86,5 +93,10 @@ void 			*ft_cmd_ctor(const void *const self, ...)
 
 void 			ft_cmd_dtor(void *const self)
 {
-	free(self);
+	t_cmd		*cmd;
+
+	cmd = self;
+	if (cmd->argv)
+		free(cmd->argv);
+	free(cmd);
 }
