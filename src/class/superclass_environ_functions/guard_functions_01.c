@@ -14,14 +14,19 @@
 
 char						*guard_home(const t_guard_struct guard)
 {
-	struct passwd			*pass;
-	char					*new;
+	char 					*login;
+	char 					*ptr;
 
 	(void)guard;
-	pass = getpwuid(getuid());
-	new = malloc(sizeof(char) * (LENS(pass->pw_dir) + 1));
-	if (!new)
+	login = getlogin();
+	if (!login)
 		return (NULL);
-	ft_memmove((int8_t*)new, (const int8_t*)pass->pw_dir, LENS(pass->pw_dir));
-	return (new);
+	ptr = malloc(sizeof(char) * (LENS(login) + 13));
+	if (!ptr)
+	{
+		// free login ?
+		return (NULL);
+	}
+	ft_strinjoin("HOME=/Users/", login, ptr);
+	return (ptr);
 }

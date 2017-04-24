@@ -17,6 +17,7 @@ static const t_guard_struct		g_guard_required[] =
 	{4, "TERM", guard_term},
 	{4, "PATH", guard_path},
 	{3, "PWD", guard_pwd},
+	{6, "OLDPWD", guard_pwd},
 	{5, "SHLVL", guard_shlvl},
 	{1, "_", guard_underscore},
 	{4, "HOME", guard_home}
@@ -57,7 +58,7 @@ void							env_guard(t_environ *const env)
 
 	index = 0;
 	environ_ptr = environ;
-	if (!environ_ptr)
+	if (!environ_ptr || !*environ_ptr)
 	{
 		env_get_default(env);
 		return ;
@@ -77,6 +78,21 @@ void							env_guard(t_environ *const env)
 	}
 }
 
+void 							env_kill(void)
+{
+	extern char 				**environ;
+	char 						**ptr;
+
+	ptr = environ;
+	if (!ptr)
+		return ;
+	while (*ptr)
+	{
+		free(*ptr);
+		*ptr++ = NULL;
+	}
+}
+
 void							env_get_default(t_environ *const env)
 {
 	extern char					**environ;
@@ -93,5 +109,6 @@ void							env_get_default(t_environ *const env)
 		environ[index] = g_guard_required[index].get(g_guard_required[index]);
 		index++;
 	}
+	environ[index] = NULL;
 	env->size = GUARD_COUNT + ENV_SPACE_AVAILABLE;
 }

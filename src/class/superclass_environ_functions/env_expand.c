@@ -12,19 +12,29 @@
 
 #include "../../../includes/shell.h"
 
+static void 	env_move(char **new)
+{
+	extern char **environ;
+	char 		**ptr;
+
+	ptr = environ;
+	while (*ptr)
+		*new++ = ft_strsub(*ptr++);
+	*new = NULL;	
+}
+
 void			env_expand(t_environ *const env, const size_t count)
 {
-	extern char	**environ;
-	char		**ptr;
-	char		**new;
+	extern char **environ;
+	char 		**new;
 
-	new = malloc(sizeof(char*) * env->size + count + 1);
-	if (!new || !environ)
-		return ;
-	ptr = new;
-	while (*environ)
-		*ptr++ = ft_strsub(*environ++);
-	*ptr = NULL;
+	if (!environ)
+		env->get_required(env);
 	env->size += count;
+	new = malloc(sizeof(char*) * (env->size + 1));
+	if (!new)
+		return ;
+	env_move(new);
+	env->kill();
 	environ = new;
 }

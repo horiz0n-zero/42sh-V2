@@ -21,6 +21,7 @@ static const t_hashb	g_hash_builtins[] =
 	{built_echo, "echo"},
 	{built_exit, "exit"},
 	{built_exit, "quit"},
+	{built_export, "export"},
 	{NULL, NULL}
 };
 
@@ -70,7 +71,18 @@ void					ft_start(t_dispatch *const dispatch)
 		ft_lookfor(dispatch, split);
 	else
 	{
-		;
+		pid_t pid;
+
+		pid = fork();
+		if (!pid)
+		{
+			*split = found;
+			execve(*split, split, environ);
+			print("ECHEC GRAVE!\n", 0);
+			exit(1);
+		}
+		else
+			wait(NULL);
 	}
 	dispatch->display->prompt(dispatch, PR_SUCCESS);
 	free(split);

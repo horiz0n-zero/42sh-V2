@@ -34,16 +34,18 @@ static void					ft_load(t_environ *const env)
 
 	count = env->count(0);
 	new = malloc(sizeof(char*) * (count + 1 + ENV_SPACE_AVAILABLE));
-	if (!count || !(ptr = new))
+	if (!new || !environ)
 	{
 		if (new)
 			free(new);
 		env_get_default(env);
 		return ;
 	}
-	while ((*ptr++ = ft_strsub(*environ++)))
-		continue ;
-	environ = new;
+	ptr = environ;
+	while (*ptr)
+		*new++ = ft_strsub(*ptr++);
+	*new = NULL;
+	environ = new - count;
 	env->size = ENV_SPACE_AVAILABLE + count;
 }
 
@@ -88,6 +90,7 @@ void						*ft_environ_ctor(const void *const self, ...)
 		return (NULL);
 	env->based_class = self;
 	env->get_required = env_guard;
+	env->modify = env_modify;
 	env->value = ft_value;
 	env->count = ft_count;
 	env->remove = env_remove;
@@ -95,6 +98,7 @@ void						*ft_environ_ctor(const void *const self, ...)
 	env->expand = env_expand;
 	env->sort = env_sshell;
 	ft_load(env);
+	env->kill = env_kill;
 	env->get_required(env);
 	env->sort(env->count(0), environ, env->sort_type);
 	return (env);
@@ -102,5 +106,6 @@ void						*ft_environ_ctor(const void *const self, ...)
 
 void						ft_environ_dtor(void *const self)
 {
+	((t_environ*)self)->kill();
 	free(self);
 }

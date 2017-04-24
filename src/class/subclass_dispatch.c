@@ -17,6 +17,7 @@ void						ft_dispatch_dtor(void *const self)
 	pthread_mutex_destroy(&((t_dispatch*)self)->mutex);
 	pthread_attr_destroy(&((t_dispatch*)self)->attribute);
 	pthread_cond_destroy(&((t_dispatch*)self)->cond);
+	exit(0);
 }
 
 void				task_dispatch_fill(void *arg)
@@ -50,8 +51,5 @@ void						*ft_dispatch_ctor(const void *const self, ...)
 		write(2, "#threadError\n", 13);
 	pthread_join(new->thread[2], (void*)&new->hashtable);
 	pthread_join(new->thread[0], (void*)&new->display);
-	new->hashtable->rm(new->hashtable, 7,
-			"echo", "setenv", "unsetenv", "env", "cd", "exit", "quit");
-	new->hashtable->set(new->hashtable, "rm", "/bin/rm");
 	return (new);
 }

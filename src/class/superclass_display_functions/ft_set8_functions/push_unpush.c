@@ -15,7 +15,7 @@
 static int32_t		ft_push_check_norme(t_dispatch *const dispatch)
 {
 	if (dispatch->display->index >
-		dispatch->display->screen.ws_col - dispatch->display->prompt_pos)
+		dispatch->display->screen.ws_col - dispatch->display->prompt_pos - 1)
 	{
 		dispatch->display->apply(2, "bl", "vb");
 		return (1);

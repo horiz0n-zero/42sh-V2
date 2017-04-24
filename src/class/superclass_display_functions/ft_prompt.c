@@ -44,7 +44,7 @@ static const t_fpr	g_cor_prompt[] =
 {
 	[PR_SUCCESS] = ft_succes,
 	[PR_FAILED] = ft_failed,
-	[PR_QUOTES] = ft_quotes
+	[PR_QUOTES] = ft_quotes,
 };
 
 void				ft_prompt(t_dispatch *const dispatch, const int32_t target)

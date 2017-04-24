@@ -14,15 +14,9 @@
 
 int				env_n(t_dispatch *const dispatch, char **argv)
 {
-	extern char	**environ;
-	char		**ptr;
-
 	(void)argv;
-	ptr = environ;
-	if (ptr)
-		while (*ptr)
-			;//free(*ptr++);
-	dispatch->environ->get_required(dispatch->environ);
+	dispatch->environ->kill();
+	env_get_default(dispatch->environ);
 	return (0);
 }
 
@@ -54,20 +48,16 @@ int				env_a(t_dispatch *const dispatch, char **argv)
 
 int				env_i(t_dispatch *const dispatch, char **argv)
 {
-	extern char	**environ;
-	char		**ptr;
+	extern char **environ;
+	char 		**ptr;
 
-	ptr = environ;
-	if (!environ)
-		return (1);
-	(void)dispatch;
 	(void)argv;
+	ptr = environ;
 	while (*ptr)
 	{
 		free(*ptr);
 		*ptr++ = NULL;
 	}
-	free(environ);
-	environ = NULL;
+	dispatch->environ->get_required(dispatch->environ);
 	return (0);
 }

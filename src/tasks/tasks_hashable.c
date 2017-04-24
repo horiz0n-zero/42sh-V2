@@ -19,6 +19,11 @@ static const t_class	g_description_hashable =
 
 void					*task_hashable_init(void *arg)
 {
-	arg = g_description_hashable.ctor(&g_description_hashable, arg);
-	return (arg);
+	t_hashable 			*hash;
+
+	hash = g_description_hashable.ctor(&g_description_hashable, arg);
+	hash->rm(hash, 8, "export", "setenv", "unsetenv", "echo", "env", "cd", "exit", "quit");
+	hash->set(hash, "vim", "/usr/bin/vim");
+	hash->set(hash, "make", "/usr/bin/make");
+	return (hash);
 }

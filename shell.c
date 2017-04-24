@@ -33,7 +33,7 @@ static void				ft_while(t_dispatch *const dispatch)
 					dispatch->display->set_24(capture, dispatch);
 				}
 				else
-					((t_class*)dispatch)->dtor(dispatch);
+					g_description_dispatch.dtor(dispatch);
 			}
 			else
 				dispatch->display->set_8(capture, dispatch);

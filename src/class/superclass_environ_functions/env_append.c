@@ -14,12 +14,15 @@
 
 void			env_append(t_environ *const env, const char *full_value)
 {
-	extern char	**environ;
+	extern char **environ;
+	size_t		size;
 
-	if (!environ)
-		env_get_default(env);
-	if (env->size >= env->count(0))
-		env->expand(env, GUARD_COUNT);
-	environ[env->count(0)] = ft_strsub(full_value);
-	environ[env->count(0) + 1] = NULL;
+	if (!environ || !*environ)
+		env->get_required(env);
+	size = env->count(1);
+	if (size >= env->size)
+		env->expand(env, ENV_SPACE_AVAILABLE);
+	environ[size] = NULL;
+	environ[size - 1] = ft_strsub(full_value);
+	env->sort(size, environ, env->sort_type);
 }

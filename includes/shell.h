@@ -127,6 +127,7 @@ struct				s_environ
 	void			(*append)(t_environ *const env, const char *full_value);
 	void			(*expand)(t_environ *const env, const size_t count);
 	const char		*(*value)(const char *key);
+	void 			(*kill)(void);
 	void			(*sort)(const int count, char **array, const int func);
 };
 void				*ft_environ_ctor(const void *const self, ...);
@@ -137,7 +138,8 @@ size_t				env_count(void);
 int					env_remove(t_environ *const env, const char *key);
 void				env_append(t_environ *const env, const char *full_value);
 void				env_expand(t_environ *const env, const size_t count);
-
+void 				env_kill(void);
+int 				env_modify(const char *key, const char *value);
 typedef int			(*const f_sort)(char*, char*);
 void				env_sshell(const int count, char **array, const int func);
 # define F_ASCII 0
@@ -160,7 +162,7 @@ char				*guard_path(const t_guard_struct guard);
 char				*guard_pwd(const t_guard_struct guard);
 char				*guard_shlvl(const t_guard_struct guard);
 char				*guard_underscore(const t_guard_struct guard);
-# define GUARD_COUNT 6
+# define GUARD_COUNT 7
 
 /*
 ** struct hashable { }; subclass
@@ -211,7 +213,7 @@ void				ft_start(t_dispatch *const dispatch);
 /*
 ** builtins
 */
-# define BUILTINS_COUNT 6
+# define BUILTINS_COUNT 7
 
 typedef int			(*const t_fbuil)(t_dispatch *const dispatch, char **argv);
 typedef struct		s_hashb
@@ -220,6 +222,7 @@ typedef struct		s_hashb
 	const char		*const text;
 }					t_hashb;
 
+int 				built_export(t_dispatch *const dispatch, char **argv);
 int					built_env(t_dispatch *const dispatch, char **argv);
 int					env_n(t_dispatch *const dispatch, char **argv);
 int					env_a(t_dispatch *const dispatch, char **argv);
