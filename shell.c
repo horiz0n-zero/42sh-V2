@@ -51,10 +51,10 @@ int						main(void)
 		write(2, "Une erreur inconnue c'est produite\n", 36);
 		return (1);
 	}
-	ft_catching_signal();
 	dispatch->display->apply(1, "cl");
 	ft_minishell();
 	dispatch->display->prompt(dispatch, PR_SUCCESS);
+	print("%d", 1, dispatch->foreground->groupid);
 	ft_while(dispatch);
 	return (0);
 }

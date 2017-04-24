@@ -14,12 +14,12 @@
 # define SHELL_H
 
 # include <unistd.h>
+# include <signal.h>
 # include <stdlib.h>
 # include <stdint.h>
 # include <stddef.h>
 # include <stdarg.h>
 # include <stdbool.h>
-# include <signal.h>
 # include <sys/wait.h>
 # include <sys/ioctl.h>
 # include <sys/types.h>
@@ -54,7 +54,8 @@ typedef struct s_display	t_display;
 typedef struct s_dispatch	t_dispatch;
 typedef struct s_environ	t_environ;
 typedef struct s_hashable	t_hashable;
-
+typedef struct s_foreground t_foreground;
+typedef struct s_cmd 		t_cmd;
 /*
 ** struct s_display { }; superclass
 */
@@ -105,10 +106,11 @@ void				ft_my(t_dispatch *const dispatch, int y, const int n);
 # define PR_SUCCESS 1
 # define PR_FAILED  2
 # define PR_QUOTES  3
+# define PR_CMD     4 // todo ?
 
 void				ft_prompt(t_dispatch *const dispatch, const int32_t target);
 typedef void		(*t_fpr)(t_dispatch *const dispatch, char *const buffer);
-
+typedef int 		(*t_fbuil)(t_dispatch *const dispatch, char **argv);
 /*
 ** struct s_environ { }; superclass
 */
@@ -188,6 +190,48 @@ void				hash_fill(t_hashable *const hash, t_environ *const env);
 void				hash_refresh(t_dispatch *const dispatch);
 
 /*
+** struct s_cmd { }; superclass
+*/
+
+struct 				s_cmd
+{
+	/*
+    ** dispatch required ...
+	*/
+	const void 		*based_class;
+	t_fbuil 		is_builtin;
+	char 			**argv;
+	int 			stdin;
+	int 			stdout;
+	int 			stderr;
+	bool 			is_ok;
+	struct s_cmd 	*next;
+};
+void 				*ft_cmd_ctor(const void *const self, ...);
+void 				ft_cmd_dtor(void *const self);
+
+/*
+** struct s_foreground { }; subclass
+*/
+
+struct 				s_foreground
+{
+	const void 		*based_class;
+	const void 		*based_class_cmd;
+	pid_t			groupid;
+	void 			(*exec)(t_dispatch *const dispatch, char *buffer);
+	/*
+ 	** processus de la fonction exec :
+	** 
+	*/
+	int 			(*execute)(t_dispatch *const dispatch, t_cmd *const cmd);
+};
+void 				*ft_foreground_ctor(const void *const self, ...);
+void 				ft_foreground_dtor(void *const self);
+
+void 				foreground_exec(t_dispatch *const dispatch, char *buffer);
+int 				foreground_execute(t_dispatch *const dispatch, t_cmd *const cmd);
+/*
 ** struct s_dispatch { }; subclass
 */
 
@@ -199,24 +243,20 @@ struct				s_dispatch
 	t_display		*display;
 	t_environ		*environ;
 	t_hashable		*hashtable;
+	t_foreground 	*foreground;
 	pthread_t		thread[4];
 	pthread_attr_t	attribute;
 	pthread_mutex_t	mutex;
 	pthread_cond_t	cond;
-	void			(*start)(t_dispatch *const dispatch);
 };
 void				*ft_dispatch_ctor(const void *const self, ...);
 void				ft_dispatch_dtor(void *const self);
-
-void				ft_start(t_dispatch *const dispatch);
 
 /*
 ** builtins
 */
 # define BUILTINS_COUNT 7
-
-typedef int			(*const t_fbuil)(t_dispatch *const dispatch, char **argv);
-typedef struct		s_hashb
+typedef struct 		s_hashb
 {
 	t_fbuil			built;
 	const char		*const text;

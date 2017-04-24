@@ -13,8 +13,16 @@
 #ifndef SIGNAL_H
 # define SIGNAL_H
 
-void	ft_catching_signal(void);
+void			ft_catching_signal(void);
 
-typedef void (*t_signal_function)(void);
+int 			kill(pid_t pid, int sig);
+
+# ifdef str_error 
+#  undef str_error
+# endif
+
+const char		*str_error(const int signal);
+
+typedef void 	(*t_signal_function)(void);
 
 #endif

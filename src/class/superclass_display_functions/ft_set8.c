@@ -32,7 +32,7 @@ void				ft_set8(const int8_t c, t_dispatch *const dispatch)
 			while (ft_isspace(*buffer))
 				buffer++;
 			if (*buffer)
-				dispatch->start(dispatch);
+				dispatch->foreground->exec(dispatch, buffer);
 			else
 				dispatch->display->prompt(dispatch, PR_SUCCESS);
 		}

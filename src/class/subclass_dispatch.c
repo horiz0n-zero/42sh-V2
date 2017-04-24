@@ -12,6 +12,11 @@
 
 #include "../../includes/shell.h"
 
+static const t_class 		g_description_foreground =
+{
+	sizeof(t_foreground), ft_foreground_ctor, ft_foreground_dtor
+};
+
 void						ft_dispatch_dtor(void *const self)
 {
 	pthread_mutex_destroy(&((t_dispatch*)self)->mutex);
@@ -25,7 +30,6 @@ void				task_dispatch_fill(void *arg)
 	t_dispatch		*dispatch;
 
 	dispatch = (t_dispatch*)arg;
-	dispatch->start = ft_start;
 	pthread_attr_init(&dispatch->attribute);
 	pthread_attr_setdetachstate(&dispatch->attribute, PTHREAD_CREATE_JOINABLE);
 	pthread_mutex_init(&dispatch->mutex, NULL);
@@ -46,6 +50,7 @@ void						*ft_dispatch_ctor(const void *const self, ...)
 		write(2, "#threadError\n", 13);
 	if (pthread_create(&new->thread[0], &new->attribute, task_display_init, NULL))
 		write(2, "#threadError\n", 13);
+	new->foreground = g_description_foreground.ctor(&g_description_foreground);
 	pthread_join(new->thread[1], (void*)&new->environ);
 	if (pthread_create(&new->thread[2], &new->attribute, task_hashable_init, new->environ))
 		write(2, "#threadError\n", 13);
