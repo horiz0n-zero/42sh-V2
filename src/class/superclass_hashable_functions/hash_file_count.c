@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 13:15:09 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/22 15:44:45 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/26 16:37:09 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static size_t		ft_look(const char *split)
 
 	count = 1;
 	rep = opendir(split);
+	if (!rep)
+		return (0);
 	while (readdir(rep))
 		count++;
 	closedir(rep);

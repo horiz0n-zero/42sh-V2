@@ -14,23 +14,9 @@ static const t_hashb	g_hash_builtins[] =
 	{NULL, NULL}
 };
 
-static bool				compare(const char *s1, const char *s2)
+static t_fbuil		cmd_isbuilt(t_cmd *const cmd, char **split)
 {
-	while (*s1 && *s2)
-	{
-		if (*s1 != *s2)
-			return (false);
-		s1++;
-		s2++;
-	}
-	if (*s1 != *s2)
-		return (false);
-	return (true);
-}
-
-static t_fbuil			cmd_isbuilt(t_cmd *const cmd, char **split)
-{
-	const t_hashb		*array = (const t_hashb*)&g_hash_builtins;
+	const t_hashb	*array = (const t_hashb*)&g_hash_builtins;
 
 	while (array->built)
 	{
@@ -45,15 +31,27 @@ static t_fbuil			cmd_isbuilt(t_cmd *const cmd, char **split)
 	return (NULL);
 }
 
-static void 	cmd_add_argv(t_dispatch *const dispatch, t_cmd *const cmd, char *buffer)
+static bool 		cmd_add_spec(t_cmd *const cmd, char **argv)
 {
-	char 		**split;
-	char 		*path;
+	cmd_redirection(cmd, argv);
+	cmd_env(cmd, argv);
+	return (true);
+}
 
-	split = ft_strsplit(buffer, ft_isspace);
+static void			cmd_add_argv(t_dispatch *const dispatch, t_cmd *const cmd,
+		char **split)
+{
+	char			*path;
+
 	if (!split || !*split)
 	{
 		cmd->is_ok = false;
+		return ;
+	}
+	cmd_add_spec(cmd, split);
+	if (*split && (**split == '.' || **split == '/'))
+	{
+		(cmd->is_ok = true) && (cmd->argv = split);
 		return ;
 	}
 	path = dispatch->hashtable->get(dispatch->hashtable, *split);
@@ -70,11 +68,11 @@ static void 	cmd_add_argv(t_dispatch *const dispatch, t_cmd *const cmd, char *bu
 	cmd->is_ok = true;
 }
 
-void 			*ft_cmd_ctor(const void *const self, ...)
+void				*ft_cmd_ctor(const void *const self, ...)
 {
-	t_dispatch 	*dispatch;
-	va_list		args;
-	t_cmd 		*new;
+	t_dispatch		*dispatch;
+	va_list			args;
+	t_cmd			*new;
 
 	new = malloc(sizeof(t_cmd));
 	if (!new)
@@ -83,20 +81,26 @@ void 			*ft_cmd_ctor(const void *const self, ...)
 	dispatch = va_arg(args, t_dispatch*);
 	new->based_class = self;
 	new->is_builtin = NULL;
+	new->is_illegal = false;
 	new->stdin = STDIN_FILENO;
 	new->stdout = STDOUT_FILENO;
 	new->stderr = STDERR_FILENO;
-	cmd_add_argv(dispatch, new, va_arg(args, char*));
+	new->background = false;
+	cmd_add_argv(dispatch, new, va_arg(args, char**));
 	va_end(args);
 	return (new);
 }
 
-void 			ft_cmd_dtor(void *const self)
+void			ft_cmd_dtor(void *const self)
 {
 	t_cmd		*cmd;
 
 	cmd = self;
-	if (cmd->argv)
-		free(cmd->argv);
+	if (cmd->stdin != STDIN_FILENO)
+		close(cmd->stdin);
+	if (cmd->stdout != STDOUT_FILENO)
+		close(cmd->stdout);
+	if (cmd->stderr != STDERR_FILENO)
+		close(cmd->stderr);
 	free(cmd);
 }

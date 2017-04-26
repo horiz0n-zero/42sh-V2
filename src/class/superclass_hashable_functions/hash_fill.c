@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 13:42:58 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/22 15:44:38 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/26 16:51:19 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ static void				hash_search(t_hashable *const hash, const char *path)
 	char				*data;
 
 	rep = opendir(path);
+	if (!rep)
+		return ;
 	while ((tmp = readdir(rep)))
 	{
 		data = ft_strcjoin(path, tmp->d_name, '/');
@@ -48,14 +50,14 @@ void					hash_fill(t_hashable *const hash, t_environ *const env)
 {
 	char				*path;
 	char				**split;
-	void				*wfree; 
+	void				*wfree;
 
 	path = ft_strsub(env->value("PATH"));
 	split = ft_strsplit(path, ft_isdoublepoint);
 	if (!split)
 		return ;
 	wfree = split;
-	while (*split)
+	while (*split && **split)
 		hash_search(hash, *split++);
 	free(path);
 	free(wfree);

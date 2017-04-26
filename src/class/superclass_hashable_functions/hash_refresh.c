@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/22 15:32:58 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/22 16:21:26 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/26 16:42:32 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void		hash_refresh(t_dispatch *const dispatch)
 	array = dispatch->hashtable->array;
 	while (size-- > 0)
 	{
-		if (*array && (ptrdiff_t)*array > (ptrdiff_t)dispatch)
+		if (*array)
 			free(*array);
 		array++;
 	}
@@ -33,6 +33,6 @@ void		hash_refresh(t_dispatch *const dispatch)
 	ft_memset_ll((int64_t*)dispatch->hashtable->array, 0,
 			dispatch->hashtable->size);
 	hash_fill(dispatch->hashtable, dispatch->environ);
-	dispatch->hashtable->rm(dispatch->hashtable, 6,
-			"echo", "setenv", "unsetenv", "env", "quit", "exit");
+	dispatch->hashtable->rm(dispatch->hashtable, 8,
+		"echo", "setenv", "unsetenv", "env", "quit", "exit", "cd", "export");
 }

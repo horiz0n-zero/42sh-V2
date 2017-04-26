@@ -6,11 +6,27 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/28 18:11:21 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/13 16:47:28 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/26 16:01:19 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+
+bool			compare(const char *s1, const char *s2)
+{
+	if (!s1 || !s2)
+		return (false);
+	while (*s1 && *s2)
+	{
+		if (*s1 != *s2)
+			return (false);
+		s1++;
+		s2++;
+	}
+	if (*s1 != *s2)
+		return (false);
+	return (true);
+}
 
 size_t			ft_strlen_magik(const char *str, const char c)
 {

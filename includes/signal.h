@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/28 21:19:52 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/24 19:35:07 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/25 14:04:40 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 # define SIGNAL_H
 
 void			ft_catching_signal(void);
+void			ft_default_signal(void);
 
 int 			kill(pid_t pid, int sig);
 
-# ifdef str_error 
+int 			setpgid(pid_t pid, pid_t pgid_t);
+# ifdef str_error
 #  undef str_error
 # endif
 

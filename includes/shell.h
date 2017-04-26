@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 18:13:33 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/24 18:01:14 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/26 18:29:10 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@
 # include "print.h"
 
 /*
-** struct s_class { }; based_class
-*/
+ ** struct s_class { }; based_class
+ */
 
 typedef struct		s_class
 {
@@ -57,8 +57,8 @@ typedef struct s_hashable	t_hashable;
 typedef struct s_foreground t_foreground;
 typedef struct s_cmd 		t_cmd;
 /*
-** struct s_display { }; superclass
-*/
+ ** struct s_display { }; superclass
+ */
 
 # define MAX_DISPLAY_CHAR 8096
 
@@ -112,8 +112,8 @@ void				ft_prompt(t_dispatch *const dispatch, const int32_t target);
 typedef void		(*t_fpr)(t_dispatch *const dispatch, char *const buffer);
 typedef int 		(*t_fbuil)(t_dispatch *const dispatch, char **argv);
 /*
-** struct s_environ { }; superclass
-*/
+ ** struct s_environ { }; superclass
+ */
 
 # define ENV_SPACE_AVAILABLE 5
 
@@ -167,8 +167,8 @@ char				*guard_underscore(const t_guard_struct guard);
 # define GUARD_COUNT 7
 
 /*
-** struct hashable { }; subclass
-*/
+ ** struct hashable { }; subclass
+ */
 
 struct				s_hashable
 {
@@ -190,29 +190,35 @@ void				hash_fill(t_hashable *const hash, t_environ *const env);
 void				hash_refresh(t_dispatch *const dispatch);
 
 /*
-** struct s_cmd { }; superclass
-*/
+ ** struct s_cmd { }; superclass
+ */
 
 struct 				s_cmd
 {
 	/*
-    ** dispatch + buffer required ...
-	*/
-	const void 		*based_class;
-	t_fbuil 		is_builtin;
-	char 			**argv;
-	int 			stdin;
-	int 			stdout;
-	int 			stderr;
-	bool 			is_ok;
-	struct s_cmd 	*next;
+	 ** dispatch + buffer required ...
+	 */
+	const void		*based_class;
+	t_fbuil			is_builtin;
+	char			**argv;
+	int				stdin;
+	int				stdout;
+	int				stderr;
+	bool			background;
+	bool			is_ok;
+	bool			is_illegal;
+	struct s_cmd	*next;
 };
 void 				*ft_cmd_ctor(const void *const self, ...);
 void 				ft_cmd_dtor(void *const self);
 
+typedef void 		(*fcmd)(t_cmd *const cmd, char **argv);
+void 				cmd_redirection(t_cmd *const cmd, char **argv);
+void 				cmd_env(t_cmd *const cmd, char **argv);
+
 /*
-** struct s_foreground { }; subclass
-*/
+ ** struct s_foreground { }; subclass
+ */
 
 struct 				s_foreground
 {
@@ -221,9 +227,9 @@ struct 				s_foreground
 	pid_t			groupid;
 	void 			(*exec)(t_dispatch *const dispatch, char *buffer);
 	/*
- 	** processus de la fonction exec :
-	** 
-	*/
+	 ** processus de la fonction exec :
+	 **
+	 */
 	int 			(*execute)(t_dispatch *const dispatch, t_cmd *const cmd);
 };
 void 				*ft_foreground_ctor(const void *const self, ...);
@@ -232,8 +238,8 @@ void 				ft_foreground_dtor(void *const self);
 void 				foreground_exec(t_dispatch *const dispatch, char *buffer);
 int 				foreground_execute(t_dispatch *const dispatch, t_cmd *const cmd);
 /*
-** struct s_dispatch { }; subclass
-*/
+ ** struct s_dispatch { }; subclass
+ */
 
 typedef void		(*t_fdis)(t_dispatch *const dispatch);
 
@@ -253,8 +259,8 @@ void				*ft_dispatch_ctor(const void *const self, ...);
 void				ft_dispatch_dtor(void *const self);
 
 /*
-** builtins
-*/
+ ** builtins
+ */
 # define BUILTINS_COUNT 7
 typedef struct 		s_hashb
 {
@@ -275,8 +281,8 @@ int					built_echo(t_dispatch *const dispatch, char **argv);
 int					built_exit(t_dispatch *const dispatch, char **argv);
 
 /*
-** pthread
-*/
+ ** pthread
+ */
 
 typedef void		*(*t_task)(void *argument);
 void				*task_display_init(void *arg);

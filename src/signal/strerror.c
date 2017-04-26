@@ -38,5 +38,8 @@ static const char *const 	g_errors[] =
 
 const char				*str_error(const int signal)
 {
-	return (g_errors[signal]);
+	if (signal < 31 && signal > 0)
+		return (g_errors[signal]);
+	else
+		return (NULL);
 }

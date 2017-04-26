@@ -47,6 +47,12 @@ static void					ft_load(t_environ *const env)
 	*new = NULL;
 	environ = new - count;
 	env->size = ENV_SPACE_AVAILABLE + count;
+	if ((new = (char**)env->value("SHLVL")))
+	{
+		new = (char**)ft_itoa_base(ft_atoi((char*)new) + 1, 10);
+		env->modify("SHLVL", (char*)new);
+		free(new);
+	}
 }
 
 static const char			*ft_value(const char *key)

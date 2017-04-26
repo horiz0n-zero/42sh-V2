@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 14:27:38 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/24 19:32:52 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/26 16:49:55 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@ int				built_setenv(t_dispatch *const dispatch, char **argv)
 	}
 	else
 		print("\e[36msetenv \e[32m: remove all $VAR specified\n\e[37m", 0);
+	dispatch->hashtable->refresh(dispatch);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/22 15:13:56 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/24 19:42:13 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/26 16:49:29 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int				env_n(t_dispatch *const dispatch, char **argv)
 	dispatch->environ->kill();
 	env_get_default(dispatch->environ);
 	chdir(dispatch->environ->value("PWD"));
+	dispatch->hashtable->refresh(dispatch);
 	return (0);
 }
 
@@ -28,9 +29,10 @@ int				env_r(t_dispatch *const dispatch, char **argv)
 	(void)argv;
 	dispatch->environ->sort_type = F_REV_ASCII;
 	if (!environ)
-		return (0);
+		dispatch->environ->get_required(dispatch->environ);
 	dispatch->environ->sort(dispatch->environ->count(0),
 			environ, dispatch->environ->sort_type);
+	dispatch->hashtable->refresh(dispatch);
 	return (0);
 }
 
@@ -44,6 +46,7 @@ int				env_a(t_dispatch *const dispatch, char **argv)
 		return (0);
 	dispatch->environ->sort(dispatch->environ->count(0),
 			environ, dispatch->environ->sort_type);
+	dispatch->hashtable->refresh(dispatch);
 	return (0);
 }
 
@@ -60,5 +63,6 @@ int				env_i(t_dispatch *const dispatch, char **argv)
 		*ptr++ = NULL;
 	}
 	dispatch->environ->get_required(dispatch->environ);
+	dispatch->hashtable->refresh(dispatch);
 	return (0);
 }

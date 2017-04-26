@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 21:01:01 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/13 16:45:58 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/25 13:35:45 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,13 @@ char	*ft_strsub(const char *src);
 char	*ft_strjoin(const char *s1, const char *s2);
 char	*ft_strcjoin(const char *s1, const char *s2, const char c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-
+bool	compare(const char *s1, const char *s2);
 int		ft_isspace(const int c);
 int		ft_isdoublepoint(const int c);
 void	ft_strinjoin(const char *s1, const char *s2, char *in);
 char	*ft_strincjoin(const char *s1, const char *s2, const char c, char *in);
+char 	*ft_itoa_base(int nb, const int base);
+int 	ft_atoi(const char *str);
 
 void	ft_minishell(void);
 

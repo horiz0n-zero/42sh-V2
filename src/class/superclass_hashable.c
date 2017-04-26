@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 16:23:00 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/22 16:21:38 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/26 18:28:36 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static size_t		ft_hashkey(const char *key)
 	size_t			hash_value;
 
 	hash_value = 0;
+	if (!key)
+		return (0);
 	while (*key)
 	{
 		hash_value += *key++;
@@ -41,6 +43,8 @@ static char			*ft_get(t_hashable *const hash, const char *key)
 	const char		*save;
 
 	save = key;
+	if (!key)
+		return (NULL);
 	data = hash->array[hash->key(key) % hash->size];
 	if (data)
 	{
