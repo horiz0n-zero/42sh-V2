@@ -6,11 +6,11 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 16:38:47 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/24 19:46:44 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/27 19:31:13 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/shell.h"
+#include "shell.h"
 
 static const t_guard_struct		g_guard_required[] =
 {
@@ -20,68 +20,67 @@ static const t_guard_struct		g_guard_required[] =
 	{6, "OLDPWD", guard_pwd},
 	{5, "SHLVL", guard_shlvl},
 	{1, "_", guard_underscore},
-	{4, "HOME", guard_home}
+	{4, "HOME", guard_home},
+	{8, "CLICOLOR", guard_lscolor}
 };
 
-static size_t					iskeyofvalue(const char *key)
+static int						iskeyofvalue(const char *key)
 {
-	size_t						index;
-	const char					*ptr;
-	const char					*cmp;
+	int							index;
+	const char					*ptr_key;
+	const char					*guard_string;
 
 	index = 0;
 	while (index < GUARD_COUNT)
 	{
-		ptr = key;
-		cmp = g_guard_required[index].string;
-		while (*ptr)
+		guard_string = g_guard_required[index].string;
+		ptr_key = key;
+		while (*guard_string && *ptr_key)
 		{
-			if (*ptr != *cmp || !*cmp)
-				return (0);
-			else if (*cmp == '=')
+			if (*guard_string != *ptr_key)
+				break ;
+			guard_string++;
+			ptr_key++;
+			if (*ptr_key == '=' && !*guard_string)
 				return (index);
-			cmp++;
-			ptr++;
 		}
 		index++;
 	}
-	return (0);
+	return (-1);
 }
 
 void							env_guard(t_environ *const env)
 {
 	extern char					**environ;
-	char						**environ_ptr;
-	size_t						index;
+	char						**ptr;
+	int							index;
 	int							board[GUARD_COUNT];
-	size_t						key;
 
-	index = 0;
-	environ_ptr = environ;
-	if (!environ_ptr || !*environ_ptr)
+	if (!(ptr = environ))
 	{
 		env_get_default(env);
 		return ;
 	}
-	while (*environ_ptr)
+	while (*ptr)
 	{
-		if ((key = iskeyofvalue(*environ_ptr)))
-			board[key] = 42;
-		environ_ptr++;
+		if ((index = iskeyofvalue(*ptr)) != -1)
+			board[index] = 42;
+		ptr++;
 	}
+	index = 0;
 	while (index < GUARD_COUNT)
 	{
-		if (board[index] == 42)
+		if (board[index] != 42)
 			env->append(env,
 					g_guard_required[index].get(g_guard_required[index]));
 		index++;
 	}
 }
 
-void 							env_kill(void)
+void							env_kill(void)
 {
-	extern char 				**environ;
-	char 						**ptr;
+	extern char					**environ;
+	char						**ptr;
 
 	ptr = environ;
 	if (!ptr)

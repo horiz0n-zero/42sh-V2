@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 18:20:44 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/22 12:22:57 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/27 16:18:36 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void			*ft_display_ctor(const void *const self, ...)
 	if (new == NULL)
 		return (NULL);
 	if (tgetent(NULL, "xterm-256color") == -1)
-		abort();
+		exit(1);
 	if (tcgetattr(0, &new->term) == -1)
 		return (NULL);
 	new->origin = new->term;

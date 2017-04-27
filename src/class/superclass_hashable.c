@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 16:23:00 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/26 18:28:36 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/27 20:12:01 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,19 +90,19 @@ void				*ft_hashable_ctor(const void *const self, ...)
 void				ft_hashable_dtor(void *const self)
 {
 	t_hashable		*hash;
-	char			**array;
-	size_t			size;
+	void			*wfree;
 
 	hash = self;
-	if (!hash->array)
-		return ;
-	array = hash->array;
-	size = hash->size;
-	while (size-- > 0)
+	wfree = hash->array;
+	if (wfree)
 	{
-		if (*array)
-			free(*array);
-		array++;
+		while (hash->size-- > 0)
+		{
+			if (*hash->array)
+				free(*hash->array);
+			hash->array++;
+		}
+		free(wfree);
 	}
-	free(array);
+	free(self);
 }

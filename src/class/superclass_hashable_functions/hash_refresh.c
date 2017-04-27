@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/22 15:32:58 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/26 16:42:32 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/27 20:14:39 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void		hash_refresh(t_dispatch *const dispatch)
 			free(*array);
 		array++;
 	}
+	free(dispatch->hashtable->array);
 	dispatch->hashtable->size = ft_bin_count(dispatch->environ);
 	dispatch->hashtable->array = malloc(sizeof(char*) *
 			dispatch->hashtable->size);
@@ -35,4 +36,6 @@ void		hash_refresh(t_dispatch *const dispatch)
 	hash_fill(dispatch->hashtable, dispatch->environ);
 	dispatch->hashtable->rm(dispatch->hashtable, 8,
 		"echo", "setenv", "unsetenv", "env", "quit", "exit", "cd", "export");
+	dispatch->hashtable->set(dispatch->hashtable, "make",
+			ft_strsub("/usr/bin/make"));
 }

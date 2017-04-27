@@ -6,11 +6,11 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 21:51:52 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/21 11:55:21 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/27 15:34:08 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/shell.h"
+#include "shell.h"
 
 static bool		env_cmp(const char *s1, const char *s2)
 {
@@ -28,22 +28,22 @@ static bool		env_cmp(const char *s1, const char *s2)
 
 static size_t	env_remove_index(const char *key)
 {
-	extern char **environ;
-	size_t 		index;
+	extern char	**environ;
+	size_t		index;
 
 	index = 0;
 	while (environ[index])
 	{
 		if (env_cmp(environ[index], key))
 			return (index);
-		index++;		
+		index++;
 	}
 	return (42);
 }
 
-static void    	env_move_rm(size_t index)
+static void		env_move_rm(size_t index)
 {
-	extern char **environ;
+	extern char	**environ;
 
 	index++;
 	if (environ[index])
@@ -59,9 +59,9 @@ static void    	env_move_rm(size_t index)
 
 int				env_remove(t_environ *const env, const char *key)
 {
-	size_t 		index;
-	size_t 		count;
-	extern char **environ;
+	size_t		index;
+	size_t		count;
+	extern char	**environ;
 
 	if (!environ || !*environ)
 		return (1);

@@ -6,11 +6,11 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 22:01:58 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/14 16:07:44 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/27 15:24:17 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/shell.h"
+#include "shell.h"
 
 void			env_append(t_environ *const env, const char *full_value)
 {

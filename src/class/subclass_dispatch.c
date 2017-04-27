@@ -6,26 +6,33 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 18:42:24 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/24 19:52:45 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/27 19:55:55 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/shell.h"
+#include "shell.h"
 
-static const t_class 		g_description_foreground =
+static const t_class		g_description_foreground =
 {
 	sizeof(t_foreground), ft_foreground_ctor, ft_foreground_dtor
 };
 
 void						ft_dispatch_dtor(void *const self)
 {
-	pthread_mutex_destroy(&((t_dispatch*)self)->mutex);
-	pthread_attr_destroy(&((t_dispatch*)self)->attribute);
-	pthread_cond_destroy(&((t_dispatch*)self)->cond);
+	t_dispatch				*dispatch;
+
+	dispatch = self;
+	pthread_mutex_destroy(&dispatch->mutex);
+	pthread_attr_destroy(&dispatch->attribute);
+	pthread_cond_destroy(&dispatch->cond);
+	(*(t_class**)dispatch->environ)->dtor(dispatch->environ);
+	(*(t_class**)dispatch->display)->dtor(dispatch->display);
+	(*(t_class**)dispatch->hashtable)->dtor(dispatch->hashtable);
+	//(*(t_class**)dispatch->foreground)->dtor(dispatch->foreground);
 	exit(0);
 }
 
-void				task_dispatch_fill(void *arg)
+void						task_dispatch_fill(void *arg)
 {
 	t_dispatch		*dispatch;
 
@@ -46,15 +53,13 @@ void						*ft_dispatch_ctor(const void *const self, ...)
 		return (NULL);
 	new->based_class = self;
 	task_dispatch_fill(new);
-	if (pthread_create(&new->thread[1], &new->attribute, task_environ_init, NULL))
-		write(2, "#threadError\n", 13);
-	if (pthread_create(&new->thread[0], &new->attribute, task_display_init, NULL))
-		write(2, "#threadError\n", 13);
+	pthread_create(&new->thread[0], &new->attribute, task_environ_init, NULL);
+	pthread_create(&new->thread[1], &new->attribute, task_display_init, NULL);
 	new->foreground = g_description_foreground.ctor(&g_description_foreground);
-	pthread_join(new->thread[1], (void*)&new->environ);
-	if (pthread_create(&new->thread[2], &new->attribute, task_hashable_init, new->environ))
-		write(2, "#threadError\n", 13);
-	pthread_join(new->thread[2], (void*)&new->hashtable);
-	pthread_join(new->thread[0], (void*)&new->display);
+	pthread_join(new->thread[0], (void**)&new->environ);
+	pthread_create(&new->thread[2], &new->attribute, task_hashable_init,
+			new->environ);
+	pthread_join(new->thread[1], (void**)&new->display);
+	pthread_join(new->thread[2], (void**)&new->hashtable);
 	return (new);
 }

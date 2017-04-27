@@ -6,11 +6,11 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 14:22:59 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/26 16:45:12 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/27 15:18:05 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/shell.h"
+#include "shell.h"
 
 static void				built_env_print(void)
 {
@@ -28,7 +28,7 @@ static void				built_env_print(void)
 	}
 }
 
-static const t_fbuil		g_functions[] =
+static const funcexe	g_functions[] =
 {
 	['i'] = env_i,
 	['r'] = env_r,
@@ -45,7 +45,7 @@ int						built_env(t_dispatch *const dispatch, char **argv)
 		if (**argv == '-')
 		{
 			if (g_functions[(int)*((*argv) + 1) & 0xFF])
-				return (g_functions[(int)*((*argv) + 1)](dispatch, argv));
+				return (g_functions[(int)*((*argv) + 1)](dispatch));
 			else
 				print("\e[36menv usage :\n-i remove env.\n-a sort in ascii\n-r\
 						sort in reverse acsii\n-n new default env\n\e[37m", 0);

@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 13:15:09 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/26 16:37:09 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/27 20:02:19 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ size_t				ft_bin_count(const t_environ *const env)
 	char			*path;
 
 	path = ft_strsub(env->value("PATH"));
-	count = 1 + BUILTINS_COUNT;
+	count = 1;
 	split = ft_strsplit(path, ft_isdoublepoint);
 	if (!split)
 		return (count);

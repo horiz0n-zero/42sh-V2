@@ -6,11 +6,11 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 17:27:55 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/22 13:29:16 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/27 15:46:51 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/shell.h"
+#include "shell.h"
 
 char			*guard_term(const t_guard_struct guard)
 {

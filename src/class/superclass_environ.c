@@ -6,11 +6,11 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 13:56:38 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/21 12:19:27 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/27 15:22:09 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/shell.h"
+#include "shell.h"
 
 static size_t				ft_count(size_t default_value)
 {
@@ -47,12 +47,6 @@ static void					ft_load(t_environ *const env)
 	*new = NULL;
 	environ = new - count;
 	env->size = ENV_SPACE_AVAILABLE + count;
-	if ((new = (char**)env->value("SHLVL")))
-	{
-		new = (char**)ft_itoa_base(ft_atoi((char*)new) + 1, 10);
-		env->modify("SHLVL", (char*)new);
-		free(new);
-	}
 }
 
 static const char			*ft_value(const char *key)
@@ -64,9 +58,7 @@ static const char			*ft_value(const char *key)
 
 	save = key;
 	ptr = environ;
-	if (!ptr)
-		return (NULL);
-	while (*ptr)
+	while (ptr && *ptr)
 	{
 		env = *ptr++;
 		while (*env && *key)
@@ -112,6 +104,12 @@ void						*ft_environ_ctor(const void *const self, ...)
 
 void						ft_environ_dtor(void *const self)
 {
-	((t_environ*)self)->kill();
+	extern char				**environ;
+	char					**ptr;
+
+	ptr = environ;
+	while (*ptr)
+		free(*ptr++);
+	free(environ);
 	free(self);
 }
