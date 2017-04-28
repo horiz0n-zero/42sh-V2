@@ -75,7 +75,7 @@ static void 		redirection_right(t_cmd *const cmd, char *r,  char *path)
 	}
 	else
 	{
-		cmd->is_illegal = true;
+		cmd->is_ok = false;
 		print("Parse error near >\n", 0);
 	}
 }
@@ -105,7 +105,7 @@ static void 		redirection_left(t_cmd *const cmd, char *r, char *path)
 	}
 	else
 	{
-		cmd->is_illegal = true;
+		cmd->is_ok = false;
 		print("Parse error near <\n", 0);
 	}
 }

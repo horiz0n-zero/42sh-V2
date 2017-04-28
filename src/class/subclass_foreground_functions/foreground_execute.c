@@ -12,19 +12,21 @@
 
 #include "shell.h"
 
-void				foreground_argvs(t_dispatch *const dispatch, char **argvs)
+static int			foreground_argvs(t_dispatch *const dispatch, char **argvs)
 {
-	char			**argv;
-	t_cmd			*cmd;
+	t_cmd 					*cmd;
+	int 						status;
 
-	argv = argvs;
-	while (*argvs)
-	{
-		if (**argvs == ';')
-		{
-			*argvs = NULL;
-		}
-	}
+	status = 0;
+	cmd = ((t_class*)dispatch->foreground->based_class_cmd)->ctor(
+		dispatch->foreground->based_class_cmd, dispatch, argvs);
+	if (cmd->is_ok)
+		status = dispatch->foreground->execute(dispatch, cmd);
+	else
+		print("Command not found: %s\n", 1, *argvs);
+	if (status)
+		print("receive : %d\n", 1, status);
+	return (status);
 }
 
 void				foreground_exec(t_dispatch *const dispatch, char *buffer)
@@ -39,5 +41,8 @@ void				foreground_exec(t_dispatch *const dispatch, char *buffer)
 		dispatch->display->prompt(dispatch, PR_SUCCESS);
 		return ;
 	}
-	foreground_argvs(dispatch, split);
+	if (foreground_argvs(dispatch, split))
+		dispatch->display->prompt(dispatch, PR_FAILED);
+	else
+		dispatch->display->prompt(dispatch, PR_SUCCESS);
 }

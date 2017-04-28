@@ -12,15 +12,6 @@
 
 #include "shell.h"
 
-static int 			ft_foreground_status(t_cmd *const cmd)
-{
-	if (cmd->argv && *cmd->argv)
-		print("Command not found : %s\n", 1, *cmd->argv);
-	else
-		print("Bad arguments\n", 0);
-	return (42);
-}
-
 static void 		execute(t_cmd *const cmd)
 {
 	pid_t 			shell;
@@ -55,27 +46,20 @@ static void 		execute(t_cmd *const cmd)
 
 int		 			foreground_execute(t_dispatch *const dispatch, t_cmd *const cmd)
 {
-	int 		status;
-	pid_t 		parent;
+	pid_t			child;
+	int 			status;
 
 	status = 0;
 	if (cmd->is_builtin)
 		return (cmd->is_builtin(dispatch, cmd->argv));
-	else
+	child = fork();
+	if (!child)
 	{
-		parent = fork();
-		if (!parent)
-		{
-			execute(cmd);
-			if (cmd->argv && *cmd->argv)
-				print("Binary not found : %s\n", 1, *cmd->argv);
-			else
-				print("Execve Fail :/\n", 0);
-			exit(1);
-		}
-		else
-			waitpid(parent, &status, 0);
-		return (status);
+		execute(cmd);
+		print("echec execve\n", 0);
+		exit(1);
 	}
-	return (ft_foreground_status(cmd));
+	else
+		waitpid(child, &status, 0);
+	return (status);
 }

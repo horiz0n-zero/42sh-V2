@@ -208,7 +208,6 @@ struct 				s_cmd
 	int				stderr;
 	bool			background;
 	bool			is_ok;
-	bool			is_illegal;
 };
 void 				*ft_cmd_ctor(const void *const self, ...);
 void 				ft_cmd_dtor(void *const self);

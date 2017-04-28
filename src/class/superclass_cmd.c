@@ -14,20 +14,16 @@ static const t_hashb	g_hash_builtins[] =
 	{NULL, NULL}
 };
 
-static t_fbuil		cmd_isbuilt(t_cmd *const cmd, char **split)
+static t_fbuil		cmd_isbuilt(const char *split)
 {
 	const t_hashb	*array = (const t_hashb*)&g_hash_builtins;
 
 	while (array->built)
 	{
-		if (compare(array->text, *split))
-		{
-			cmd->argv = split;
+		if (compare(array->text, split))
 			return (array->built);
-		}
 		array++;
 	}
-	cmd->argv = split;
 	return (NULL);
 }
 
@@ -39,33 +35,19 @@ static bool 		cmd_add_spec(t_cmd *const cmd, char **argv)
 }
 
 static void			cmd_add_argv(t_dispatch *const dispatch, t_cmd *const cmd,
-		char **split)
+		char **argv)
 {
-	char			*path;
+	void 					*path;
 
-	if (!split || !*split)
-	{
+	path = dispatch->hashtable->get(dispatch->hashtable, *argv);
+	cmd->argv = argv;
+	if (path)
+		*cmd->argv = path;
+	else if ((path = cmd_isbuilt(*argv)))
+		cmd->is_builtin = path;
+	else if (!(**argv == '.' || **argv == '/'))
 		cmd->is_ok = false;
-		return ;
-	}
-	cmd_add_spec(cmd, split);
-	if (*split && (**split == '.' || **split == '/'))
-	{
-		(cmd->is_ok = true) && (cmd->argv = split);
-		return ;
-	}
-	path = dispatch->hashtable->get(dispatch->hashtable, *split);
-	if (!path)
-	{
-		if (!(cmd->is_builtin = cmd_isbuilt(cmd, split)))
-			cmd->is_ok = false;
-		else
-			cmd->is_ok = true;
-		return ;
-	}
-	*split = path;
-	cmd->argv = split;
-	cmd->is_ok = true;
+	cmd_add_spec(cmd, cmd->argv);
 }
 
 void				*ft_cmd_ctor(const void *const self, ...)
@@ -81,7 +63,7 @@ void				*ft_cmd_ctor(const void *const self, ...)
 	dispatch = va_arg(args, t_dispatch*);
 	new->based_class = self;
 	new->is_builtin = NULL;
-	new->is_illegal = false;
+	new->is_ok = true;
 	new->stdin = STDIN_FILENO;
 	new->stdout = STDOUT_FILENO;
 	new->stderr = STDERR_FILENO;
