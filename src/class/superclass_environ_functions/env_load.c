@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 16:38:47 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/27 19:31:13 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/28 16:53:38 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void							env_guard(t_environ *const env)
 	int							index;
 	int							board[GUARD_COUNT];
 
-	if (!(ptr = environ))
+	if (!(ptr = environ) || !*ptr)
 	{
 		env_get_default(env);
 		return ;
@@ -101,8 +101,6 @@ void							env_get_default(t_environ *const env)
 	environ = malloc(sizeof(char*) *
 			((sizeof(g_guard_required) / sizeof(g_guard_required[0]))
 			+ 1 + ENV_SPACE_AVAILABLE));
-	if (!environ)
-		return ;
 	while (index < GUARD_COUNT)
 	{
 		environ[index] = g_guard_required[index].get(g_guard_required[index]);

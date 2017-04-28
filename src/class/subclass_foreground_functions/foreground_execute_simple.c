@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 17:57:33 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/26 18:23:38 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/28 17:07:28 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 static void 		execute(t_cmd *const cmd)
 {
-	pid_t 			shell;
-	pid_t 			shell_gp;
+	//pid_t 			shell;
+	//pid_t 			shell_gp;
 	extern char 	**environ;
 
-	shell = getpid();
-	shell_gp = getpgrp();
-	if (!shell_gp)
-		shell_gp = shell;
-	setpgid(shell, shell_gp);
-	if (!cmd->background)
-		tcsetpgrp(STDIN_FILENO, shell_gp);
+	//shell = getpid();
+	//shell_gp = getpgrp();
+	//if (!shell_gp)
+	//	shell_gp = shell;
+	//setpgid(shell, shell_gp);
+	//if (!cmd->background)
+		//tcsetpgrp(STDIN_FILENO, shell_gp);
 	ft_default_signal();
 	if (cmd->stdin != STDIN_FILENO)
 	{
@@ -60,6 +60,8 @@ int		 			foreground_execute(t_dispatch *const dispatch, t_cmd *const cmd)
 		exit(1);
 	}
 	else
+	{
 		waitpid(child, &status, 0);
+	}
 	return (status);
 }
