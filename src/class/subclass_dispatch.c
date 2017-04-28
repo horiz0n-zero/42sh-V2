@@ -6,7 +6,7 @@
 /*   By: afeuerst <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 18:42:24 by afeuerst          #+#    #+#             */
-/*   Updated: 2017/04/27 19:55:55 by afeuerst         ###   ########.fr       */
+/*   Updated: 2017/04/28 13:33:38 by afeuerst         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void						ft_dispatch_dtor(void *const self)
 	(*(t_class**)dispatch->environ)->dtor(dispatch->environ);
 	(*(t_class**)dispatch->display)->dtor(dispatch->display);
 	(*(t_class**)dispatch->hashtable)->dtor(dispatch->hashtable);
-	//(*(t_class**)dispatch->foreground)->dtor(dispatch->foreground);
+	(*(t_class**)dispatch->foreground)->dtor(dispatch->foreground);
 	exit(0);
 }
 

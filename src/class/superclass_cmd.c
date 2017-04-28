@@ -27,17 +27,17 @@ static t_fbuil		cmd_isbuilt(const char *split)
 	return (NULL);
 }
 
-static bool 		cmd_add_spec(t_cmd *const cmd, char **argv)
+static void			cmd_add_spec(t_cmd *const cmd, char **argv)
 {
 	cmd_redirection(cmd, argv);
 	cmd_env(cmd, argv);
-	return (true);
 }
 
 static void			cmd_add_argv(t_dispatch *const dispatch, t_cmd *const cmd,
 		char **argv)
 {
 	void 					*path;
+	struct stat				c;
 
 	path = dispatch->hashtable->get(dispatch->hashtable, *argv);
 	cmd->argv = argv;
@@ -45,8 +45,13 @@ static void			cmd_add_argv(t_dispatch *const dispatch, t_cmd *const cmd,
 		*cmd->argv = path;
 	else if ((path = cmd_isbuilt(*argv)))
 		cmd->is_builtin = path;
-	else if (!(**argv == '.' || **argv == '/'))
-		cmd->is_ok = false;
+	else
+	{
+		if (!stat(*argv, &c) && S_ISREG(c.st_mode) && c.st_mode & S_IXUSR)
+			cmd->is_ok = true;
+		else
+			cmd->is_ok = false;
+	}
 	cmd_add_spec(cmd, cmd->argv);
 }
 
